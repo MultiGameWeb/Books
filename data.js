@@ -26,6 +26,7 @@ window.STORE_DEFAULTS = {
     seoDescription: 'Shop printed books from Your Brand. Browse books, explore offers and order online.',
     seoKeywords: 'books, printed books, bookstore, Your Brand',
     seoImage: '',
+    // TODO: prototype-only PIN, visible in source — replace with Firebase Authentication before production
     adminPin: '2468'
   },
   books: [

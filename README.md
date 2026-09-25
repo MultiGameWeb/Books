@@ -1,4 +1,4 @@
-# Bookstore Website V8 — Frontend Test Build
+# Bookstore Website V10 — Frontend Test Build
 
 ## Main flow
 Books → Cart → Checkout → Order Success
@@ -8,9 +8,7 @@ Books → Cart → Checkout → Order Success
 - Book details modal
 - Stock / out-of-stock handling
 - Amazon purchase button per book
-- WhatsApp enquiry per book
 - Cart count and per-book cart badge
-- Wishlist prototype
 - Offers: 10% OFF, Buy 1 Get 1, Buy Any 2 Get 1 Free
 - Delivery ON/OFF, per-km fee, minimum fee and free-delivery threshold
 - Gallery and enquiry pages
@@ -32,9 +30,11 @@ Data is stored in browser localStorage/sessionStorage. This is not production se
 
 V8 layout update: the cinematic Three.js book animation is embedded on the right side of the main hero, while “Discover Books That Inspire Change”, the supporting text, Shop Books, and Ask an Enquiry remain on the left. The Admin button remains in the top navigation.
 
-## V9 update
+## V9/V10 updates
 - Hero animation is isolated in a dedicated rounded card to the right of the hero copy.
 - Replay controls and animation captions were removed.
 - The Three.js animation auto-plays once and freezes on the completed open-book frame.
 - Per-book WhatsApp enquiry buttons were removed from cards and book details; WhatsApp remains in Contact/Enquiry areas.
+- Cinematic pen ink uses antique-gold drawing with warm glow, and the canvas color space is explicitly set for consistent rendering.
+- Book-details modal uses the single working `.modal-backdrop` + `.modal-card` CSS path; dead modal rules were removed.
 - Main hero copy stays separate from the animation.

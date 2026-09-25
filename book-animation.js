@@ -17,6 +17,7 @@
     powerPreference: 'high-performance'
   });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.outputEncoding = THREE.sRGBEncoding;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -80,6 +81,7 @@
   pageCanvas.height = canvasSize;
   const ctx = pageCanvas.getContext('2d');
   const pageTexture = new THREE.CanvasTexture(pageCanvas);
+  pageTexture.encoding = THREE.sRGBEncoding;
   pageTexture.anisotropy = 8;
 
   const quoteLine1 = 'A reader lives';
@@ -190,7 +192,7 @@
   penNib.position.y = 0.10;
 
   function canvasToWorld(cx, cy) {
-    const topPageY = (totalBookH * 3) + (totalBookH / 2) + 0.055;
+    const topPageY = book4Group.position.y + (b4PageH / 2) + 0.012;
     const normX = ((cx / canvasSize) - 0.5) * b4PageW + 0.06;
     const normZ = ((cy / canvasSize) - 0.5) * b4PageD;
     return new THREE.Vector3(normX, topPageY, normZ);
@@ -198,10 +200,15 @@
 
   function renderHandwriting(progressL1, progressL2, progressFlourish) {
     drawPageBackground();
-    ctx.fillStyle = '#0a1733';
+    const inkColor = '#8a5a1c';
+    ctx.fillStyle = inkColor;
+    ctx.strokeStyle = inkColor;
+    ctx.lineWidth = 1.6;
     ctx.textAlign = 'left';
     ctx.textBaseline = 'alphabetic';
     ctx.font = "italic 76px Georgia, 'Times New Roman', serif";
+    ctx.shadowColor = 'rgba(245,195,66,0.45)';
+    ctx.shadowBlur = 6;
 
     if (progressL1 > 0) {
       ctx.save();
@@ -209,6 +216,7 @@
       ctx.rect(0, l1_Y - 95, curX, 130);
       ctx.clip();
       ctx.fillText(quoteLine1, l1_startX, l1_Y);
+      ctx.strokeText(quoteLine1, l1_startX, l1_Y);
       ctx.restore();
     }
     if (progressL2 > 0) {
@@ -217,11 +225,12 @@
       ctx.rect(0, l2_Y - 95, curX, 130);
       ctx.clip();
       ctx.fillText(quoteLine2, l2_startX, l2_Y);
+      ctx.strokeText(quoteLine2, l2_startX, l2_Y);
       ctx.restore();
     }
     if (progressFlourish > 0) {
       ctx.save();
-      ctx.strokeStyle = '#0a1733';
+      ctx.strokeStyle = inkColor;
       ctx.lineWidth = 4.5;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
@@ -237,6 +246,8 @@
       ctx.stroke();
       ctx.restore();
     }
+    ctx.shadowBlur = 0;
+    ctx.shadowColor = 'transparent';
     pageTexture.needsUpdate = true;
   }
 
