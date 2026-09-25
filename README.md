@@ -1,28 +1,16 @@
-# Bookstore Website V2
+# Bookstore Website V4 Prototype
 
-Frontend prototype for a direct-to-customer printed bookstore.
+Core flow: Books → Cart → Checkout → Order Success.
 
-## Main screens
-- `index.html` — Books / Home
-- `cart.html` — Cart
-- `checkout.html` — Checkout & demo payment UI
-- `success.html` — Order Success
-- `gallery.html` — Gallery
-- `enquiry.html` — Customer Enquiry
-- `admin.html` — Prototype Admin Panel
+Added in V4:
+- Admin book catalog with cover upload, stock quantity, visible/out-of-stock status and Amazon URL.
+- Storefront stock badges and disabled purchase buttons for out-of-stock books.
+- Per-book cart quantity badge on the book card after Add to Cart.
+- Admin Delivery & Shipping settings: ON/OFF, fee per KM, minimum fee and free-shipping threshold.
+- Checkout delivery-distance field for prototype shipping calculation.
+- Admin Offers: 10% OFF, Buy 1 Get 1, Buy Any 2 Get 1 Free.
+- Admin Gallery image/poster upload and delete.
+- WhatsApp, phone, Google Maps and support text settings.
+- Fixed internal navigation to use index.html as the main Books page; no books.html dependency.
 
-## Admin panel features
-- Home text editing
-- Book add/edit/delete
-- Book cover upload (prototype localStorage) or image URL
-- Gallery add/delete
-- WhatsApp number
-- Phone number
-- Google Maps location link
-- Support/contact text
-- Enquiry inbox
-
-## Important
-This is a static prototype. Admin data and enquiries are stored in browser `localStorage`; there is no real security, backend, authentication, file storage, or payment gateway yet.
-
-For production, migrate the data layer to Firebase (Auth + Firestore + Storage) and integrate Razorpay server-side after frontend testing.
+Prototype limitation: data is stored in browser localStorage. Before real orders, add Firebase Authentication, Firestore, Storage and secure payment/server integration such as Razorpay.

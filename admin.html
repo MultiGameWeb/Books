@@ -1,135 +1,69 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Admin Panel | Your Brand</title>
-<link rel="stylesheet" href="styles.css">
-</head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Admin Panel | Your Brand</title><link rel="stylesheet" href="styles.css"></head>
 <body class="admin-shell">
-<header class="admin-top">
-  <div class="container admin-topbar">
-    <div>
-      <div class="admin-kicker">STORE MANAGEMENT</div>
-      <strong class="admin-title">Your Brand — Admin Panel</strong>
-      <div class="admin-subtitle">Manage books, home content, gallery, enquiries and store contact details.</div>
-    </div>
-    <div class="admin-actions"><a class="btn btn-light" href="index.html">Open Website ↗</a></div>
-  </div>
-</header>
-
+<header class="admin-top"><div class="container admin-topbar"><div><div class="admin-kicker">STORE MANAGEMENT</div><strong class="admin-title">Your Brand — Admin Panel</strong><div class="admin-subtitle">Manage books, stock, delivery, offers, gallery, enquiries and store links.</div></div><div class="admin-actions"><a class="btn btn-light" href="index.html">Open Website ↗</a></div></div></header>
 <main class="container admin-layout">
-  <aside class="admin-side">
-    <div class="admin-side-label">MENU</div>
-    <button class="active" data-target="dashboard">📊 Dashboard</button>
-    <button data-target="home">🏠 Home</button>
-    <button data-target="books">📚 Books</button>
-    <button data-target="orders">📦 Orders</button>
-    <button data-target="gallery">🖼️ Gallery</button>
-    <button data-target="enquiries">💬 Enquiries</button>
-    <button data-target="contact">📞 Contact & Links</button>
-    <div class="admin-side-note">Prototype only<br><span>Firebase Auth + database will replace local storage later.</span></div>
-  </aside>
+<aside class="admin-side">
+<div class="admin-side-label">MENU</div>
+<button class="active" data-target="dashboard">📊 Dashboard</button><button data-target="home">🏠 Home</button><button data-target="books">📚 Books</button><button data-target="orders">📦 Orders</button><button data-target="delivery">🚚 Delivery</button><button data-target="offers">🎁 Offers</button><button data-target="gallery">🖼️ Gallery</button><button data-target="enquiries">💬 Enquiries</button><button data-target="contact">📞 Contact & Links</button>
+<div class="admin-side-note">Prototype storage<br><span>Firebase Auth + database + image storage will replace local storage later.</span></div>
+</aside>
+<section class="admin-main">
+<section id="dashboard" class="admin-section">
+<div class="admin-section-head"><div><div class="admin-eyebrow">OVERVIEW</div><h1>Dashboard</h1><p class="meta">Quick snapshot of your bookstore.</p></div></div>
+<div id="dashStats" class="admin-grid admin-stats"></div>
+<div class="admin-card"><div class="card-head"><div><h2>Quick Actions</h2><p class="meta">Jump directly to common tasks.</p></div></div><div class="quick-actions">
+<button class="quick-action" data-quick="books"><b>＋ Add Book</b><span>Upload cover, stock and Amazon link</span></button><button class="quick-action" data-quick="delivery"><b>⚙ Delivery</b><span>Turn delivery on/off and set per-km fee</span></button><button class="quick-action" data-quick="offers"><b>🎁 Set Offer</b><span>Choose 10% off or a free-book offer</span></button><button class="quick-action" data-quick="gallery"><b>＋ Add Gallery Image</b><span>Upload posters or photos</span></button>
+</div></div>
+<div class="admin-card"><div class="card-head"><div><h2>Current Store Rules</h2><p class="meta">What customers will see and how the prototype calculates orders.</p></div></div><div id="ruleSummary" class="rule-grid"></div></div>
+<div class="admin-card"><div class="card-head"><div><h2>Recent Orders</h2><p class="meta">Latest prototype orders saved in this browser.</p></div><button class="btn btn-light" data-quick="orders">View All</button></div><div id="recentOrders" class="mini-list"></div></div>
+</section>
 
-  <section class="admin-main">
-    <section id="dashboard" class="admin-section">
-      <div class="admin-section-head"><div><div class="admin-eyebrow">OVERVIEW</div><h1>Dashboard</h1><p class="meta">Quick snapshot of your bookstore.</p></div></div>
-      <div id="dashStats" class="admin-grid admin-stats"></div>
-      <div class="admin-card">
-        <div class="card-head"><div><h2>Quick Actions</h2><p class="meta">Jump directly to common tasks.</p></div></div>
-        <div class="quick-actions">
-          <button class="quick-action" data-quick="books"><b>＋ Add Book</b><span>Upload a new printed book</span></button>
-          <button class="quick-action" data-quick="gallery"><b>＋ Add Gallery Image</b><span>Showcase books or events</span></button>
-          <button class="quick-action" data-quick="home"><b>✎ Edit Home</b><span>Update hero text and branding</span></button>
-          <button class="quick-action" data-quick="contact"><b>⚙ Contact Settings</b><span>WhatsApp, call & location</span></button>
-        </div>
-      </div>
-      <div class="admin-card">
-        <div class="card-head"><div><h2>Recent Orders</h2><p class="meta">Latest prototype orders saved in this browser.</p></div><button class="btn btn-light" data-quick="orders">View All</button></div>
-        <div id="recentOrders" class="mini-list"></div>
-      </div>
-    </section>
+<section id="home" class="admin-section hidden"><div class="admin-card"><div class="card-head"><div><div class="admin-eyebrow">CONTENT</div><h1>Home</h1><p class="meta">Edit the public storefront heading and brand text.</p></div></div>
+<form id="settingsForm"><div class="row"><div class="field"><label>Brand Name</label><input id="s_brandName" class="input" name="brandName"></div><div class="field"><label>Tagline</label><input id="s_tagline" class="input" name="tagline"></div></div><div class="field"><label>Hero Title</label><input id="s_heroTitle" class="input" name="heroTitle"></div><div class="field"><label>Hero Text</label><textarea id="s_heroText" class="textarea" name="heroText" rows="3"></textarea></div><div class="field"><label>Support Text</label><textarea id="s_supportText" class="textarea" name="supportText" rows="2"></textarea></div><button class="btn btn-gold" type="submit">Save Home Content</button></form>
+</div></section>
 
-    <section id="home" class="admin-section hidden">
-      <div class="admin-card">
-        <div class="card-head"><div><div class="admin-eyebrow">CONTENT</div><h1>Home</h1><p class="meta">Edit the public storefront heading and brand text.</p></div></div>
-        <form id="settingsForm">
-          <div class="row"><div class="field"><label>Brand Name</label><input id="s_brandName" class="input" name="brandName"></div><div class="field"><label>Tagline</label><input id="s_tagline" class="input" name="tagline"></div></div>
-          <div class="field"><label>Hero Title</label><input id="s_heroTitle" class="input" name="heroTitle"></div>
-          <div class="field"><label>Hero Text</label><textarea id="s_heroText" class="textarea" name="heroText" rows="3"></textarea></div>
-          <div class="field"><label>Support Text</label><textarea id="s_supportText" class="textarea" name="supportText" rows="2"></textarea></div>
-          <button class="btn btn-gold" type="submit">Save Home Content</button>
-        </form>
-      </div>
-    </section>
+<section id="books" class="admin-section hidden"><div class="admin-card"><div class="card-head"><div><div class="admin-eyebrow">CATALOG</div><h1>Books</h1><p class="meta">Add or edit printed books, stock status and the Amazon purchase link.</p></div><button class="btn btn-light" id="newBook">＋ New Book</button></div>
+<form id="bookForm"><input type="hidden" id="bookId"><input type="hidden" id="bookCoverData">
+<div class="row"><div class="field"><label>Book Title *</label><input class="input" id="bookTitle" required></div><div class="field"><label>Author</label><input class="input" id="bookAuthor"></div></div>
+<div class="row"><div class="field"><label>Price ₹</label><input class="input" id="bookPrice" type="number" min="0"></div><div class="field"><label>Format</label><select class="select" id="bookFormat"><option>Paperback</option><option>Hardcover</option></select></div></div>
+<div class="row"><div class="field"><label>Category</label><input class="input" id="bookCategory" placeholder="Self Help, Education, Fiction..."></div><div class="field"><label>Stock / Copies Available</label><input class="input" id="bookStock" type="number" min="0" value="0"></div></div>
+<div class="row"><div class="field"><label>Rating</label><input class="input" id="bookRating" type="number" step="0.1" min="0" max="5"></div><div class="field"><label>Reviews</label><input class="input" id="bookReviews" type="number" min="0"></div></div>
+<div class="field"><label>Amazon Book Link</label><input class="input" id="bookAmazonUrl" type="url" placeholder="https://www.amazon.in/..."/><div class="field-help">When saved, the storefront will show a <b>Buy on Amazon ↗</b> button for this book.</div></div>
+<div class="row"><div class="field"><label>Cover Image URL</label><input class="input" id="bookCoverUrl" type="url" placeholder="https://..."></div><div class="field"><label>Upload Cover</label><input id="bookCoverFile" class="input" type="file" accept="image/*"></div></div>
+<div class="field"><label>Book Status</label><label class="switch-line"><input id="bookActive" type="checkbox" checked><span>Visible on website</span></label></div>
+<div id="bookPreview" class="preview-box"></div>
+<div class="field"><label>Description</label><textarea class="textarea" id="bookDescription" rows="4" placeholder="Short description shown on the store."></textarea></div>
+<div class="form-actions"><button class="btn btn-primary" type="submit">Save Book</button><button class="btn btn-light" type="button" id="cancelBook">Cancel</button></div>
+</form></div>
+<div class="admin-card"><div class="card-head"><div><h2>Book Catalog</h2><p class="meta">Inventory, stock status and Amazon links.</p></div><div class="table-tools"><input id="bookAdminSearch" class="input" placeholder="Search books..."></div></div><div class="table-scroll"><table class="admin-table"><thead><tr><th>Book</th><th>Price</th><th>Stock</th><th>Status</th><th>Amazon</th><th>Actions</th></tr></thead><tbody id="booksTable"></tbody></table></div></div>
+</section>
 
-    <section id="books" class="admin-section hidden">
-      <div class="admin-card">
-        <div class="card-head"><div><div class="admin-eyebrow">CATALOG</div><h1>Books</h1><p class="meta">Add or edit printed books. Upload a cover image or use an image URL.</p></div><button class="btn btn-light" id="newBook">＋ New Book</button></div>
-        <form id="bookForm">
-          <input type="hidden" id="bookId"><input type="hidden" id="bookCoverData">
-          <div class="row"><div class="field"><label>Book Title *</label><input class="input" id="bookTitle" required></div><div class="field"><label>Author</label><input class="input" id="bookAuthor"></div></div>
-          <div class="row"><div class="field"><label>Price ₹</label><input class="input" id="bookPrice" type="number" min="0"></div><div class="field"><label>Format</label><select class="select" id="bookFormat"><option>Paperback</option><option>Hardcover</option></select></div></div>
-          <div class="row"><div class="field"><label>Category</label><input class="input" id="bookCategory" placeholder="Self Help, Education, Fiction..."></div><div class="field"><label>Rating</label><input class="input" id="bookRating" type="number" step="0.1" min="0" max="5"></div></div>
-          <div class="row"><div class="field"><label>Reviews</label><input class="input" id="bookReviews" type="number" min="0"></div><div class="field"><label>Cover Image URL</label><input class="input" id="bookCoverUrl" placeholder="https://..."></div></div>
-          <div class="field"><label>Upload Cover</label><input id="bookCoverFile" class="input" type="file" accept="image/*"><div class="field-help">Prototype stores uploaded images in browser storage. Later this moves to Firebase Storage.</div></div>
-          <div id="bookPreview" class="preview-box"></div>
-          <div class="field"><label>Description</label><textarea class="textarea" id="bookDescription" rows="4" placeholder="Short description shown on the store."></textarea></div>
-          <div class="form-actions"><button class="btn btn-primary" type="submit">Save Book</button><button class="btn btn-light" type="button" id="cancelBook">Cancel</button></div>
-        </form>
-      </div>
-      <div class="admin-card">
-        <div class="card-head"><div><h2>Book Catalog</h2><p class="meta">Books currently visible on the storefront.</p></div><div class="table-tools"><input id="bookAdminSearch" class="input" placeholder="Search books..."></div></div>
-        <div class="table-scroll"><table class="admin-table"><thead><tr><th>Book</th><th>Author</th><th>Price</th><th>Format</th><th>Category</th><th>Status</th><th>Actions</th></tr></thead><tbody id="booksTable"></tbody></table></div>
-      </div>
-    </section>
+<section id="orders" class="admin-section hidden"><div class="admin-card"><div class="card-head"><div><div class="admin-eyebrow">SALES</div><h1>Orders</h1><p class="meta">Prototype orders recorded after mock checkout.</p></div><button class="btn btn-danger" id="clearOrders">Clear Orders</button></div><div class="table-scroll"><table class="admin-table"><thead><tr><th>Order ID</th><th>Date</th><th>Customer</th><th>Phone</th><th>Items</th><th>Total</th><th>Status</th></tr></thead><tbody id="ordersTable"></tbody></table></div></div></section>
 
-    <section id="orders" class="admin-section hidden">
-      <div class="admin-card">
-        <div class="card-head"><div><div class="admin-eyebrow">SALES</div><h1>Orders</h1><p class="meta">Prototype orders recorded after mock checkout.</p></div><button class="btn btn-danger" id="clearOrders">Clear Orders</button></div>
-        <div class="table-scroll"><table class="admin-table"><thead><tr><th>Order ID</th><th>Date</th><th>Customer</th><th>Phone</th><th>Items</th><th>Total</th><th>Status</th></tr></thead><tbody id="ordersTable"></tbody></table></div>
-      </div>
-    </section>
+<section id="delivery" class="admin-section hidden"><div class="admin-card"><div class="card-head"><div><div class="admin-eyebrow">SHIPPING</div><h1>Delivery & Shipping</h1><p class="meta">Simple delivery rules controlled from one place.</p></div></div><form id="deliveryForm">
+<div class="field"><label class="switch-line"><input id="deliveryEnabled" type="checkbox"><span><b>Delivery ON</b> — allow delivery charges on customer orders</span></label></div>
+<div class="row"><div class="field"><label>Delivery fee per 1 KM (₹)</label><input id="deliveryFeePerKm" class="input" type="number" min="0" step="0.01"></div><div class="field"><label>Minimum delivery fee (₹)</label><input id="deliveryMinimumFee" class="input" type="number" min="0" step="0.01"></div></div>
+<div class="field"><label class="switch-line"><input id="freeShippingEnabled" type="checkbox"><span>Enable free delivery above the threshold</span></label></div>
+<div class="field"><label>Free delivery threshold (₹)</label><input id="freeShippingThreshold" class="input" type="number" min="0" step="1"></div>
+<div class="notice">Prototype note: checkout currently accepts the delivery distance in KM. Later we can auto-calculate distance from the customer's address/pincode using a maps/location service.</div>
+<div class="form-actions" style="margin-top:14px"><button class="btn btn-gold" type="submit">Save Delivery Settings</button></div>
+</form></div></section>
 
-    <section id="gallery" class="admin-section hidden">
-      <div class="admin-card">
-        <div class="card-head"><div><div class="admin-eyebrow">MEDIA</div><h1>Gallery</h1><p class="meta">Add book covers, author events, store photos or other images.</p></div></div>
-        <form id="galleryForm">
-          <div class="row"><div class="field"><label>Title *</label><input class="input" name="title" required></div><div class="field"><label>Caption</label><input class="input" name="caption"></div></div>
-          <div class="row"><div class="field"><label>Image URL</label><input id="galleryUrl" class="input" placeholder="https://..."></div><div class="field"><label>Upload Image</label><input id="galleryFile" class="input" type="file" accept="image/*"></div></div>
-          <input type="hidden" id="galleryData">
-          <button class="btn btn-primary">Add Gallery Item</button>
-        </form>
-      </div>
-      <div class="admin-card"><div class="card-head"><div><h2>Gallery Items</h2></div></div><div id="galleryAdminGrid" class="admin-gallery-grid"></div></div>
-    </section>
+<section id="offers" class="admin-section hidden"><div class="admin-card"><div class="card-head"><div><div class="admin-eyebrow">PROMOTIONS</div><h1>Offers</h1><p class="meta">Select one simple automatic offer for customers.</p></div></div><form id="offersForm">
+<div class="field"><label class="switch-line"><input id="offerEnabled" type="checkbox"><span><b>Offer ON</b></span></label></div>
+<div class="field"><label>Offer Type</label><select id="offerType" class="select"><option value="none">No Offer</option><option value="percent10">10% OFF</option><option value="bogo500">Buy 1 Get 1</option><option value="any2get1">Buy Any 2, Get 1 Free</option></select></div>
+<div class="row"><div class="field"><label>Minimum purchase / qualifying price (₹)</label><input id="offerMinPurchase" class="input" type="number" min="0"></div><div class="field"><label>Free book max price for Buy 1 Get 1 (₹)</label><input id="bogoFreeMaxPrice" class="input" type="number" min="0"></div></div>
+<div class="row"><div class="field"><label>Offer title (storefront)</label><input id="offerTitle" class="input" placeholder="10% OFF on your order"></div><div class="field"><label>Offer text (storefront)</label><input id="offerText" class="input" placeholder="Automatic discount at checkout"></div></div>
+<div class="offer-explain"><b>How this prototype applies the offers:</b><br>10% OFF = 10% of eligible subtotal. Buy 1 Get 1 = when a qualifying book is in cart, the cheapest second book priced within the configured free-book limit is discounted. Buy Any 2, Get 1 Free = with 3 or more book units, the cheapest additional unit is free up to the higher price of the first two units.</div>
+<button class="btn btn-gold" type="submit">Save Offer</button></form></div></section>
 
-    <section id="enquiries" class="admin-section hidden">
-      <div class="admin-card">
-        <div class="card-head"><div><div class="admin-eyebrow">INBOX</div><h1>Enquiries</h1><p class="meta">Customer messages from the enquiry page.</p></div><button class="btn btn-danger" id="clearEnquiries">Clear All</button></div>
-        <div class="table-scroll"><table class="admin-table"><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Email</th><th>Message</th><th>Date</th><th>Action</th></tr></thead><tbody id="enquiriesTable"></tbody></table></div>
-      </div>
-    </section>
+<section id="gallery" class="admin-section hidden"><div class="admin-card"><div class="card-head"><div><div class="admin-eyebrow">MEDIA</div><h1>Gallery</h1><p class="meta">Upload any poster, book photo, event image or other store image.</p></div></div><form id="galleryForm"><div class="row"><div class="field"><label>Title *</label><input class="input" name="title" required></div><div class="field"><label>Caption</label><input class="input" name="caption"></div></div><div class="row"><div class="field"><label>Image URL</label><input id="galleryUrl" class="input" type="url" placeholder="https://..."></div><div class="field"><label>Upload Poster / Image</label><input id="galleryFile" class="input" type="file" accept="image/*"></div></div><input type="hidden" id="galleryData"><button class="btn btn-primary" type="submit">Add Gallery Image</button></form></div><div class="admin-card"><div class="card-head"><div><h2>Gallery Items</h2></div></div><div id="galleryAdminGrid" class="admin-gallery-grid"></div></div></section>
 
-    <section id="contact" class="admin-section hidden">
-      <div class="admin-card">
-        <div class="card-head"><div><div class="admin-eyebrow">CONTACT</div><h1>Contact & Links</h1><p class="meta">Control the buttons customers use to reach the business.</p></div></div>
-        <form id="contactForm">
-          <div class="row"><div class="field"><label>WhatsApp Number</label><input id="s_whatsapp" class="input" placeholder="919876543210"></div><div class="field"><label>Phone Number</label><input id="s_phone" class="input" placeholder="+91 98765 43210"></div></div>
-          <div class="row"><div class="field"><label>Location Text</label><input id="s_locationLabel" class="input" placeholder="Visit our store"></div><div class="field"><label>Google Maps Link</label><input id="s_locationUrl" class="input" placeholder="https://maps.google.com/..." type="url"></div></div>
-          <div class="field"><label>Enquiry / Support Text</label><textarea id="s_supportText2" class="textarea" rows="4"></textarea></div>
-          <button class="btn btn-gold" type="submit">Save Contact Settings</button>
-        </form>
-      </div>
-    </section>
+<section id="enquiries" class="admin-section hidden"><div class="admin-card"><div class="card-head"><div><div class="admin-eyebrow">INBOX</div><h1>Enquiries</h1><p class="meta">Customer messages from the enquiry page.</p></div><button class="btn btn-danger" id="clearEnquiries">Clear All</button></div><div class="table-scroll"><table class="admin-table"><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Email</th><th>Message</th><th>Date</th><th>Action</th></tr></thead><tbody id="enquiriesTable"></tbody></table></div></div></section>
 
-    <div class="admin-card admin-warning"><strong>Before production:</strong> add Firebase Authentication, Firestore and Storage. Do not use this localStorage admin as a real secure administrator account.
-      <div class="form-actions" style="margin-top:12px"><button class="btn btn-danger" id="resetStore">Reset Demo Store</button></div>
-    </div>
-  </section>
-</main>
-<div class="toast"></div>
-<script src="data.js"></script>
-<script src="admin.js"></script>
-</body>
-</html>
+<section id="contact" class="admin-section hidden"><div class="admin-card"><div class="card-head"><div><div class="admin-eyebrow">CONTACT</div><h1>Contact & Links</h1><p class="meta">Control the WhatsApp, call, location and support text used by customers.</p></div></div><form id="contactForm"><div class="row"><div class="field"><label>WhatsApp Number</label><input id="s_whatsapp" class="input" placeholder="919876543210"></div><div class="field"><label>Phone Number</label><input id="s_phone" class="input" placeholder="+91 98765 43210"></div></div><div class="row"><div class="field"><label>Location Text</label><input id="s_locationLabel" class="input" placeholder="Visit our store"></div><div class="field"><label>Google Maps Link</label><input id="s_locationUrl" class="input" placeholder="https://maps.google.com/..." type="url"></div></div><div class="field"><label>Enquiry / Support Text</label><textarea id="s_supportText2" class="textarea" rows="4"></textarea></div><button class="btn btn-gold" type="submit">Save Contact Settings</button></form></div></section>
+
+<div class="admin-card admin-warning"><strong>Before production:</strong> this is still a prototype admin using local browser storage. Firebase Authentication, Firestore and Storage should be added before accepting real orders. <div class="form-actions" style="margin-top:12px"><button class="btn btn-danger" id="resetStore">Reset Demo Store</button></div></div>
+</section></main><div class="toast"></div><script src="data.js"></script><script src="admin.js"></script></body></html>
