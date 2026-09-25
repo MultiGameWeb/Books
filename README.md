@@ -1,25 +1,28 @@
-# Your Brand — Bookstore Frontend Prototype
+# Bookstore Website V2
 
-Frontend-only prototype for a printed-book direct-to-customer store.
+Frontend prototype for a direct-to-customer printed bookstore.
 
-## Flow
-Books → Cart → Checkout & Payment (demo) → Order Success
+## Main screens
+- `index.html` — Books / Home
+- `cart.html` — Cart
+- `checkout.html` — Checkout & demo payment UI
+- `success.html` — Order Success
+- `gallery.html` — Gallery
+- `enquiry.html` — Customer Enquiry
+- `admin.html` — Prototype Admin Panel
 
-## Included
-- Responsive Books/store page
-- Search, category filter, price slider, sorting
-- Data-driven sample catalog in `data.js`
-- Functional cart with localStorage persistence
-- Guest checkout form validation
-- Mock payment method selection
-- Dynamic order confirmation page
-- No login/OTP/backend/payment gateway yet
+## Admin panel features
+- Home text editing
+- Book add/edit/delete
+- Book cover upload (prototype localStorage) or image URL
+- Gallery add/delete
+- WhatsApp number
+- Phone number
+- Google Maps location link
+- Support/contact text
+- Enquiry inbox
 
-## Later integrations
-- Firebase for product/order data
-- Razorpay for real payment processing
-- Fulfilment/shipping provider
-- Custom domain
+## Important
+This is a static prototype. Admin data and enquiries are stored in browser `localStorage`; there is no real security, backend, authentication, file storage, or payment gateway yet.
 
-## Run locally
-Serve the folder with any static web server.
+For production, migrate the data layer to Firebase (Auth + Firestore + Storage) and integrate Razorpay server-side after frontend testing.
