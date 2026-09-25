@@ -1,4 +1,4 @@
-# Bookstore Website V7 — Frontend Test Build
+# Bookstore Website V8 — Frontend Test Build
 
 ## Main flow
 Books → Cart → Checkout → Order Success
@@ -28,3 +28,6 @@ The top of the main website now contains a Three.js cinematic book animation ada
 
 ## Prototype limitations
 Data is stored in browser localStorage/sessionStorage. This is not production security or shared multi-device data. Before launch, replace prototype storage with Firebase Auth/Firestore/Storage and integrate Razorpay with server-side order creation and payment verification.
+
+
+V8 layout update: the cinematic Three.js book animation is embedded on the right side of the main hero, while “Discover Books That Inspire Change”, the supporting text, Shop Books, and Ask an Enquiry remain on the left. The Admin button remains in the top navigation.
