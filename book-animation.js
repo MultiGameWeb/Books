@@ -1,6 +1,5 @@
 (function(){
   const canvas = document.getElementById('bookAnimationCanvas');
-  const replayBtn = document.getElementById('replayBtn');
   if (!canvas || !window.THREE) return;
 
   const wrap = canvas.parentElement;
@@ -242,7 +241,6 @@
   }
 
   let startTime = performance.now();
-  let active = true;
 
   function easeDrop(t) {
     if (t < 0.6) {
@@ -261,12 +259,6 @@
     return startY + (landY - startY) * easeDrop(progress);
   }
 
-  function resetAnimation() {
-    startTime = performance.now();
-    active = true;
-  }
-  replayBtn?.addEventListener('click', resetAnimation);
-
   function resize() {
     const w = Math.max(320, wrap.clientWidth || window.innerWidth);
     const h = Math.max(300, wrap.clientHeight || 420);
@@ -277,8 +269,10 @@
   window.addEventListener('resize', resize, { passive: true });
   resize();
 
+  let animationFinished = false;
+
   function renderLoop(currentTime) {
-    requestAnimationFrame(renderLoop);
+    if (animationFinished) return;
     const elapsed = (currentTime - startTime) / 1000;
 
     const y1 = totalBookH / 2;
@@ -356,14 +350,28 @@
       penGroup.rotation.set(0.20, -0.08, 0.30);
     } else {
       pL1 = 1; pL2 = 1; pFl = 1;
-      active = false;
-      // Final frame intentionally holds: no book, pen, or stack is removed.
+      animationFinished = true;
+      // Freeze the exact final frame. No element is removed or faded out.
+      book1.position.y = y1;
+      book2.position.y = y2;
+      book3.position.y = y3;
+      book4Group.position.y = y4;
+      coverHinge.rotation.z = Math.PI * 0.95;
+      const endFlPos = canvasToWorld(fl_endX, fl_Y);
+      penGroup.position.set(endFlPos.x + 0.18, endFlPos.y + 0.25, endFlPos.z - 0.12);
+      penGroup.rotation.set(0.20, -0.08, 0.30);
+      renderHandwriting(1, 1, 1);
+      camera.position.x = 0;
+      camera.lookAt(0, 0.72, 0);
+      renderer.render(scene, camera);
+      return;
     }
 
     renderHandwriting(pL1, pL2, pFl);
     camera.position.x = Math.sin(elapsed * 0.28) * 0.18;
     camera.lookAt(0, 0.72, 0);
     renderer.render(scene, camera);
+    if (!animationFinished) requestAnimationFrame(renderLoop);
   }
 
   requestAnimationFrame(renderLoop);

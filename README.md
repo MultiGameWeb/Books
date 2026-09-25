@@ -31,3 +31,10 @@ Data is stored in browser localStorage/sessionStorage. This is not production se
 
 
 V8 layout update: the cinematic Three.js book animation is embedded on the right side of the main hero, while “Discover Books That Inspire Change”, the supporting text, Shop Books, and Ask an Enquiry remain on the left. The Admin button remains in the top navigation.
+
+## V9 update
+- Hero animation is isolated in a dedicated rounded card to the right of the hero copy.
+- Replay controls and animation captions were removed.
+- The Three.js animation auto-plays once and freezes on the completed open-book frame.
+- Per-book WhatsApp enquiry buttons were removed from cards and book details; WhatsApp remains in Contact/Enquiry areas.
+- Main hero copy stays separate from the animation.
