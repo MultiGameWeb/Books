@@ -1,6 +1,13 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Your Brand | Printed Books</title><meta name="description" content="Shop printed books from Your Brand."><meta name="robots" content="index,follow"><link rel="stylesheet" href="styles.css"></head><body><div id="customerApp">
+<section class="cinematic-intro" aria-label="Cinematic book animation">
+  <div class="cinematic-canvas-wrap"><canvas id="bookAnimationCanvas"></canvas></div>
+  <div class="cinematic-overlay">
+    <div class="cinematic-brand">YOUR BRAND · PRINTED BOOKS</div>
+    <button class="cinematic-replay" id="replayBtn" type="button">↺ Replay</button>
+  </div>
+</section>
 
-<header class="header"><div class="container nav"><a class="brand" href="index.html"><div class="brand-mark">▰</div><div class="brand-text"><strong class="brand-name">Your Brand</strong><span class="tagline">Books for a Better Tomorrow</span></div></a><nav class="nav-links"><a class="active" href="index.html">Books</a><a href="gallery.html">Gallery</a><a href="enquiry.html">Enquiry</a><a href="#about">About</a><a href="#contact">Contact</a></nav><label class="search">⌕<input id="searchInput" placeholder="Search books, topics, authors..." aria-label="Search books"></label><a class="icon-btn" href="cart.html" aria-label="Cart">🛒<span class="cart-count">0</span></a></div></header>
+<header class="header"><div class="container nav"><a class="brand" href="index.html"><div class="brand-mark">▰</div><div class="brand-text"><strong class="brand-name">Your Brand</strong><span class="tagline">Books for a Better Tomorrow</span></div></a><nav class="nav-links"><a class="active" href="index.html">Books</a><a href="gallery.html">Gallery</a><a href="enquiry.html">Enquiry</a><a href="#about">About</a><a href="#contact">Contact</a></nav><label class="search">⌕<input id="searchInput" placeholder="Search books, topics, authors..." aria-label="Search books"></label><a class="admin-nav-btn" href="#admin" aria-label="Open Admin Panel">⚙ Admin</a><a class="icon-btn" href="cart.html" aria-label="Cart">🛒<span class="cart-count">0</span></a></div></header>
 <section class="hero"><div class="container hero-inner"><div><h1 id="heroTitle">Discover Books That <span class="accent">Inspire Change</span></h1><p id="heroText">Explore printed books to learn, grow and be inspired.</p><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px"><a class="btn btn-gold" href="#books">Shop Books →</a><a class="btn btn-light" href="enquiry.html">Ask an Enquiry</a></div></div><div class="hero-art"><div class="stack"><div class="book-mini one">Book<br>Collection</div><div class="book-mini two">Printed<br>Books</div><div class="book-mini three">Read.<br>Learn.<br>Grow.</div></div></div></div></section>
 <section class="trust-strip"><div class="container trust"><div class="trust-item"><div class="ti">🚚</div><div><strong class="delivery-status">Delivery Available</strong><span>Store delivery</span></div></div><div class="trust-item"><div class="ti">📖</div><div><strong>Quality Prints</strong><span>Printed editions</span></div></div><div class="trust-item"><div class="ti">🛡</div><div><strong>Secure Ordering</strong><span>Payment-ready</span></div></div><div class="trust-item"><div class="ti">💬</div><div><strong>Easy Enquiries</strong><span>WhatsApp & contact</span></div></div></div></section>
 <div class="container"><div id="offerBanner" class="offer-banner" aria-live="polite"></div></div>
@@ -82,7 +89,9 @@
 </section></main>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="data.js"></script>
+<script src="book-animation.js"></script>
 <script src="app.js"></script>
 <script src="admin.js"></script>
 <script>

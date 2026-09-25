@@ -1,23 +1,30 @@
-# Bookstore Website — Final Frontend Test Build
+# Bookstore Website V7 — Frontend Test Build
 
-Frontend-only prototype for a direct-to-customer printed bookstore.
-
-## Customer flow
+## Main flow
 Books → Cart → Checkout → Order Success
 
-Additional pages: Gallery, Enquiry, About/Contact, WhatsApp, Call, Google Maps.
+## Customer features
+- Search, category filtering and sorting
+- Book details modal
+- Stock / out-of-stock handling
+- Amazon purchase button per book
+- WhatsApp enquiry per book
+- Cart count and per-book cart badge
+- Wishlist prototype
+- Offers: 10% OFF, Buy 1 Get 1, Buy Any 2 Get 1 Free
+- Delivery ON/OFF, per-km fee, minimum fee and free-delivery threshold
+- Gallery and enquiry pages
+- WhatsApp, Call, Address text and Google Maps link
+- Responsive desktop/mobile layout
+- Invoice/print-friendly order area and demo order tracking UI
+- SEO and prototype analytics
+- COD ON/OFF
 
 ## Integrated admin
-Admin is part of the same main website. There is no separate admin HTML page.
-Open `index.html#admin` to reach the prototype admin area and enter the PIN.
+Admin is integrated into `index.html` and accessed through the visible **Admin** button in the main header (also `#admin`). The panel is protected by the prototype PIN and includes books, orders, delivery, offers, gallery, enquiries, contact/links, SEO, analytics, home content and security settings.
 
-Admin sections include: Dashboard, Analytics, Home, Books, Orders, Delivery, Offers, Gallery, Enquiries, Contact & Links, SEO, Security/COD.
+## Cinematic 3D intro
+The top of the main website now contains a Three.js cinematic book animation adapted from the provided reference code. Three hardcover books fall and remain visible, a fourth book lands on top and opens, and a gold pen writes on the cream page. The final frame holds the full stack, open book and pen in place. No item is intentionally removed or faded from the animation.
 
-## Current storage
-This test build uses browser `localStorage` for catalog/settings/cart/orders/enquiries/gallery/analytics. This is NOT production security and does not sync across customer devices.
-
-## Production stage later
-After frontend testing and confirmation: Firebase Auth + Firestore + Storage, server-side Razorpay payment flow/signature verification, real delivery integration, custom domain, deployment, and production security.
-
-## Animation reference for later
-A cinematic 3D animation on a dark navy-blue background with a soft warm spotlight glow. Three hardcover books fall one after another and land in a stack; each remains fully visible. A fourth book lands on top and opens outward to reveal a cream page. A gold pen flies in, touches the page, and draws a signature-like stroke. All books, the stack, and pen remain visible throughout. Final frame holds on the open book with completed stroke, gold/navy palette, warm dramatic lighting, shallow depth of field, premium mood.
+## Prototype limitations
+Data is stored in browser localStorage/sessionStorage. This is not production security or shared multi-device data. Before launch, replace prototype storage with Firebase Auth/Firestore/Storage and integrate Razorpay with server-side order creation and payment verification.
