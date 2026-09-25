@@ -6,7 +6,8 @@ window.STORE_DEFAULTS = {
     heroText: 'Explore printed books to learn, grow and be inspired.',
     whatsapp: '919876543210',
     phone: '+91 98765 43210',
-    locationLabel: 'Our Location',
+    locationLabel: 'Our Store Location',
+    address: 'Your store address goes here.',
     locationUrl: 'https://maps.google.com/',
     supportText: 'Have a question? We are here to help.',
     deliveryEnabled: true,
@@ -14,12 +15,18 @@ window.STORE_DEFAULTS = {
     deliveryMinimumFee: 20,
     freeShippingEnabled: true,
     freeShippingThreshold: 999,
+    codEnabled: true,
     offerEnabled: false,
-    offerType: 'percent10',
+    offerType: 'none',
     offerMinPurchase: 500,
     bogoFreeMaxPrice: 500,
     offerTitle: '',
-    offerText: ''
+    offerText: '',
+    seoTitle: 'Your Brand | Printed Books',
+    seoDescription: 'Shop printed books from Your Brand. Browse books, explore offers and order online.',
+    seoKeywords: 'books, printed books, bookstore, Your Brand',
+    seoImage: '',
+    adminPin: '2468'
   },
   books: [
     {id:'b1', title:'Book Title 01', author:'Author Name', price:299, format:'Paperback', category:'Self Help', rating:4.8, reviews:120, cover:'', featured:true, stock:10, active:true, amazonUrl:'', description:'A placeholder printed book for the first prototype.'},
@@ -51,3 +58,21 @@ window.saveStore = function(data){ localStorage.setItem('bookStoreData', JSON.st
 window.ensureStore = function(){ if(!localStorage.getItem('bookStoreData')) saveStore(structuredClone(STORE_DEFAULTS)); return getStore(); };
 window.getCart = function(){ try{return JSON.parse(localStorage.getItem('bookCart'))||[]}catch{return [];} };
 window.saveCart = function(cart){localStorage.setItem('bookCart', JSON.stringify(cart));};
+window.getAnalytics = function(){
+  try { return JSON.parse(localStorage.getItem('bookAnalytics')) || {pageViews:0,events:{},pages:{},bookViews:{},lastVisit:''}; }
+  catch { return {pageViews:0,events:{},pages:{},bookViews:{},lastVisit:''}; }
+};
+window.trackEvent = function(name, data){
+  try{
+    const a=getAnalytics();
+    a.events[name]=(a.events[name]||0)+1;
+    if(name==='page_view'){
+      a.pageViews++;
+      const page=(data&&data.page)||location.pathname;
+      a.pages[page]=(a.pages[page]||0)+1;
+      a.lastVisit=new Date().toISOString();
+    }
+    if(name==='book_view' && data?.bookId) a.bookViews[data.bookId]=(a.bookViews[data.bookId]||0)+1;
+    localStorage.setItem('bookAnalytics',JSON.stringify(a));
+  }catch{}
+};

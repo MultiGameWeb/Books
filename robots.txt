@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+# Add the final absolute sitemap URL here after the custom domain is chosen.

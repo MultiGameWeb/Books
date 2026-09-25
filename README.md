@@ -1,16 +1,18 @@
-# Bookstore Website V4 Prototype
+# Bookstore Website V5
 
-Core flow: Books → Cart → Checkout → Order Success.
+Frontend prototype for a direct-to-customer printed bookstore.
 
-Added in V4:
-- Admin book catalog with cover upload, stock quantity, visible/out-of-stock status and Amazon URL.
-- Storefront stock badges and disabled purchase buttons for out-of-stock books.
-- Per-book cart quantity badge on the book card after Add to Cart.
-- Admin Delivery & Shipping settings: ON/OFF, fee per KM, minimum fee and free-shipping threshold.
-- Checkout delivery-distance field for prototype shipping calculation.
-- Admin Offers: 10% OFF, Buy 1 Get 1, Buy Any 2 Get 1 Free.
-- Admin Gallery image/poster upload and delete.
-- WhatsApp, phone, Google Maps and support text settings.
-- Fixed internal navigation to use index.html as the main Books page; no books.html dependency.
+## Main customer flow
+Books → Cart → Checkout → Order Success
 
-Prototype limitation: data is stored in browser localStorage. Before real orders, add Firebase Authentication, Firestore, Storage and secure payment/server integration such as Razorpay.
+## Added in V5
+- Admin prototype PIN gate
+- COD ON/OFF setting
+- SEO settings panel and dynamic meta/OG/canonical handling
+- Prototype analytics dashboard
+- Improved location/address text on storefront
+- Order status management
+- Previous cart/offer/stock/Amazon/gallery/enquiry features retained
+
+## Important
+This is still a browser-local prototype. Do not accept real orders or payments until Firebase Authentication/Firestore/Storage, server-side authorization, Razorpay server-side order/signature verification, real shipping and final domain/SEO setup are added.
