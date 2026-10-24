@@ -6,6 +6,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  getFirestore,
   orderBy,
   query,
   serverTimestamp,
@@ -13,14 +14,13 @@ import {
   updateDoc,
   writeBatch
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
-import { firebaseConfig } from "./firebase-config.js";
+import { firebaseConfig, isFirebaseConfigured } from "./firebase-config.js";
 
-const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+const configured = isFirebaseConfigured();
+export const app = configured ? (getApps().length ? getApp() : initializeApp(firebaseConfig)) : null;
+export const auth = app ? getAuth(app) : null;
+export const db = app ? getFirestore(app) : null;
 
-export const auth = getAuth(app);
-export const db = getFirestoreSafe(app);
-
-// Keep the modular SDK functions in one place so app code remains easy to maintain.
 export {
   collection,
   deleteDoc,
@@ -36,6 +36,7 @@ export {
 };
 
 export async function getAllBooks() {
+  if (!db) throw new Error("Firebase is not configured yet. Update js/firebase-config.js first.");
   const snapshot = await getDocs(collection(db, "books"));
   return snapshot.docs
     .map((entry) => ({ id: entry.id, ...entry.data() }))
@@ -47,6 +48,7 @@ export async function getAllBooks() {
 }
 
 export async function getBookPages(bookId) {
+  if (!db) throw new Error("Firebase is not configured yet. Update js/firebase-config.js first.");
   const snapshot = await getDocs(collection(db, "books", bookId, "pages"));
   return snapshot.docs
     .map((entry) => ({ id: entry.id, ...entry.data() }))
@@ -56,10 +58,3 @@ export async function getBookPages(bookId) {
       return (Number.isFinite(aOrder) ? aOrder : 0) - (Number.isFinite(bOrder) ? bOrder : 0);
     });
 }
-
-function getFirestoreSafe(firebaseApp) {
-  return getFirestore(firebaseApp);
-}
-
-// Imported as a named function above so the initialisation stays explicit.
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
