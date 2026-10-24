@@ -514,7 +514,7 @@ $("#refreshButton").addEventListener("click", loadAdminData);
 
 googleSignInButton.addEventListener("click", async () => {
   if (!auth) return status(authStatus, "Paste the Firebase web app config into js/firebase-config.js and save the file first.", "error");
-  if (!ADMIN_EMAILS.length) return status(authStatus, "Replace ADMIN_EMAIL_1 and ADMIN_EMAIL_2 in js/admin.js with the approved author's Google email address(es), and replace the same placeholders in firestore.rules.", "error");
+  if (!ADMIN_EMAILS.length) return status(authStatus, "Configure the approved author email in js/admin.js and put the same email in firestore.rules.", "error");
   googleSignInButton.disabled = true;
   status(authStatus, "Opening Google sign-in…");
   try {
@@ -552,7 +552,7 @@ if (!isFirebaseConfigured()) {
   status(authStatus, "Setup needed: paste the Firebase Web App config into js/firebase-config.js. This placeholder config intentionally cannot sign in.", "error");
 } else if (!ADMIN_EMAILS.length) {
   googleSignInButton.disabled = true;
-  status(authStatus, "Setup needed: replace ADMIN_EMAIL_1 and ADMIN_EMAIL_2 in js/admin.js with the author's approved Google email address(es), and use the same emails in firestore.rules.", "error");
+  status(authStatus, "Setup needed: configure the approved author email in js/admin.js and put the same email in firestore.rules.", "error");
 } else {
   googleSignInButton.disabled = false;
 }
