@@ -585,15 +585,8 @@ async function start() {
 
   hideLoading();
   renderBooks();
-  const hasPublishedSiteDetails = Boolean(
-    String(settings.authorName || "").trim() ||
-    String(settings.tagline || "").trim() ||
-    String(settings.bio || "").trim() ||
-    safeDataImage(settings.authorPhoto) ||
-    safeWhatsAppNumber(settings.whatsappNumber) ||
-    safePhone(settings.phone)
-  );
-  els.emptyStoreState.hidden = books.length > 0 || hasPublishedSiteDetails;
+  // Keep the storefront visibly useful even when the catalogue is empty.
+  els.emptyStoreState.hidden = books.length > 0;
   els.navBooks.hidden = books.length === 0;
   els.heroSeeBooks.hidden = books.length === 0;
   if (settingsResult.status === "rejected" || booksResult.status === "rejected") {
@@ -611,5 +604,6 @@ start().catch(() => {
   els.booksSection.hidden = true;
   els.orderSection.hidden = true;
   els.header.hidden = true;
+  if (els.emptyStoreState) els.emptyStoreState.hidden = false;
   handleStateError("The bookstore could not be loaded right now. Please refresh and try again.");
 });
