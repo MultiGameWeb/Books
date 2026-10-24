@@ -2,12 +2,12 @@
 // This file is public in a browser-based GitHub Pages site. Do not put private service-account
 // credentials, private keys, or other server secrets here.
 export const firebaseConfig = {
-  apiKey: "PASTE_FIREBASE_API_KEY",
-  authDomain: "PASTE_PROJECT_ID.firebaseapp.com",
-  projectId: "PASTE_PROJECT_ID",
-  storageBucket: "PASTE_STORAGE_BUCKET",
-  messagingSenderId: "PASTE_MESSAGING_SENDER_ID",
-  appId: "PASTE_FIREBASE_APP_ID"
+  apiKey: "AIzaSyDm8Jr-79n8MRxS2uEPC8hQBNXCNj0NN6Q",
+  authDomain: "dr-m-devendra-books.firebaseapp.com",
+  projectId: "dr-m-devendra-books",
+  storageBucket: "dr-m-devendra-books.firebasestorage.app",
+  messagingSenderId: "4406457928",
+  appId: "1:4406457928:web:40ce524741783f14d90a7d"
 };
 
 export function isFirebaseConfigured() {
