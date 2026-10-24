@@ -4,71 +4,87 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0F5C66">
-  <title>Printed Books</title>
+  <title>Dr M Devendramma Books</title>
   <meta name="description" content="">
-  <meta property="og:title" content="">
+  <meta property="og:title" content="Dr M Devendramma Books">
   <meta property="og:description" content="">
   <meta property="og:image" content="">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/public.css">
+  <link rel="stylesheet" href="css/book-animation.css">
   <script type="module" src="js/public.js"></script>
+  <script src="book-animation.js" defer></script>
 </head>
 <body>
   <header id="siteHeader" class="site-header">
     <div class="container header-inner">
-      <a id="brand" class="brand" href="index.html" aria-label="Home">
+      <a id="brand" class="brand" href="#home" aria-label="Dr M Devendramma Books home">
         <span class="brand-icon" aria-hidden="true">▰</span>
-        <span id="brandCopy" class="brand-copy" hidden>
-          <span id="brandName" class="brand-name"></span>
+        <span id="brandCopy" class="brand-copy">
+          <span id="brandName" class="brand-name">Dr M Devendramma Books</span>
           <span id="brandTagline" class="brand-tagline" hidden></span>
         </span>
       </a>
       <nav class="site-nav" aria-label="Main navigation">
-        <a id="navBooks" href="#booksSection" hidden>Books</a>
-        <a id="navAbout" href="#aboutSection" hidden>About</a>
-        <a id="navContact" href="#contactSection" hidden>Contact</a>
+        <a href="#home">Home</a>
+        <a href="#booksSection">Books</a>
+        <a href="#gallerySection">Gallery</a>
+        <a href="#enquirySection">Enquiry</a>
+        <a href="#aboutSection">About</a>
+        <a href="#contactSection">Contact</a>
       </nav>
-      <button id="cartToggle" class="btn btn-outline btn-small cart-toggle" type="button" aria-controls="cartDrawer" aria-expanded="false">
-        Cart <span id="cartCount" class="cart-count" aria-label="items in cart">0</span>
-      </button>
+      <div class="header-actions">
+        <a id="headerWhatsApp" class="btn btn-outline btn-small header-whatsapp" href="#" target="_blank" rel="noopener noreferrer" hidden>WhatsApp</a>
+        <button id="cartToggle" class="btn btn-outline btn-small cart-toggle" type="button" aria-controls="cartDrawer" aria-expanded="false">
+          Cart <span id="cartCount" class="cart-count" aria-label="items in cart">0</span>
+        </button>
+      </div>
     </div>
   </header>
 
-  <div id="loadingState" class="container state-panel" role="status" aria-live="polite" style="margin-block:28px">
-    <p>Loading bookstore…</p>
+  <div id="siteError" class="site-error container" role="alert" aria-live="assertive" hidden>
+    Could not load books. Please refresh.
   </div>
 
-  <div id="errorState" class="container state-panel error" role="alert" aria-live="assertive" hidden style="margin-block:28px">
-    <p id="errorMessage"></p>
-    <a id="errorWhatsApp" class="fallback-link" href="#" target="_blank" rel="noopener noreferrer" hidden></a>
-  </div>
-
-  <main id="siteContent" hidden>
-    <section id="emptyStoreState" class="container state-panel empty-store" hidden aria-live="polite">
-      <div>
-        <h1 class="empty-store-title">Books will be available soon</h1>
-        <p id="emptyStoreText" class="empty-store-text"></p>
-        <a id="emptyStoreWhatsApp" class="btn btn-primary" href="#" target="_blank" rel="noopener noreferrer" hidden>Contact on WhatsApp</a>
-      </div>
-    </section>
-
-    <section id="hero" class="hero" hidden aria-labelledby="heroName">
+  <main id="siteContent">
+    <section id="home" class="hero" aria-labelledby="heroHeading">
       <div class="container hero-inner">
-        <div>
+        <div class="hero-copy">
           <p class="eyebrow">Author's collection</p>
-          <h1 class="hero-title" id="heroHeading" hidden><span id="heroName"></span></h1>
-          <p id="heroTagline" class="hero-tagline" hidden></p>
+          <h1 id="heroHeading" class="hero-title">Discover your next book.</h1>
+          <p id="heroTagline" class="hero-tagline">Printed books by Dr M Devendramma</p>
           <div class="hero-actions">
-            <a id="heroSeeBooks" class="btn btn-primary" href="#booksSection">See books <span aria-hidden="true">→</span></a>
+            <a id="heroSeeBooks" class="btn btn-primary" href="#booksSection">Shop Books <span aria-hidden="true">→</span></a>
+            <a class="btn btn-outline" href="#enquirySection">Ask an Enquiry</a>
           </div>
-          <p class="hero-note"><span class="hero-note-dot" aria-hidden="true"></span>Printed books, selected by the author</p>
+          <p class="hero-note"><span class="hero-note-dot" aria-hidden="true"></span>Printed editions · Direct enquiries</p>
+        </div>
+        <div class="hero-art hero-animation">
+          <div id="bookAnimationScene" class="book-animation-scene" aria-hidden="true">
+            <div class="book-animation-glow"></div>
+            <div class="book-animation-floor"></div>
+            <div class="book-stage">
+              <div class="book-stack">
+                <div class="hero-book hero-book-green"><span class="cover-frame"></span><span class="cover-emblem"></span><span class="cover-rule"></span></div>
+                <div class="hero-book hero-book-orange"><span class="cover-frame"></span><span class="cover-emblem"></span><span class="cover-rule"></span></div>
+                <div class="hero-book hero-book-navy"><span class="cover-frame"></span><span class="cover-emblem"></span><span class="cover-rule"></span></div>
+                <div class="open-book">
+                  <div class="open-page open-page-left"><span class="page-rule"></span><span class="page-rule"></span><span class="page-rule"></span><span class="page-rule"></span></div>
+                  <div class="open-page open-page-right"><span class="page-rule"></span><span class="page-rule"></span><span class="page-rule"></span><span class="page-rule"></span><span class="signature-line"></span></div>
+                </div>
+                <div class="book-pen"><span class="pen-tip"></span><span class="pen-body"></span><span class="pen-cap"></span></div>
+                <div class="book-shadow"></div>
+              </div>
+            </div>
+            <span class="animation-orbit orbit-one"></span><span class="animation-orbit orbit-two"></span>
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="booksSection" class="section" hidden aria-labelledby="booksHeading">
+    <section id="booksSection" class="section" aria-labelledby="booksHeading">
       <div class="container">
         <div class="section-head">
           <div>
@@ -82,22 +98,63 @@
           <label class="search-field"><span aria-hidden="true">⌕</span><span class="search-visible-label">Search</span><input id="bookSearch" type="search" aria-label="Search books, authors or topics" autocomplete="off"></label>
         </div>
         <div id="booksGrid" class="book-grid"></div>
-        <div id="booksEmpty" class="state-panel" hidden><p>No matching books.</p></div>
+        <p id="booksStatus" class="section-status" role="status" aria-live="polite">Loading books…</p>
       </div>
     </section>
 
-    <section id="aboutSection" class="section about-section" hidden aria-labelledby="aboutHeading">
+    <section id="gallerySection" class="section gallery-section" aria-labelledby="galleryHeading">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Moments and memories</p>
+            <h2 id="galleryHeading">Gallery</h2>
+            <p class="section-intro">Photos shared by the author.</p>
+          </div>
+        </div>
+        <div id="galleryGrid" class="gallery-grid"></div>
+        <p id="galleryStatus" class="section-status" role="status" aria-live="polite">Loading gallery…</p>
+      </div>
+    </section>
+
+    <section id="enquirySection" class="section enquiry-section" aria-labelledby="enquiryHeading">
+      <div class="container enquiry-layout">
+        <div>
+          <p class="section-kicker">Have a question?</p>
+          <h2 id="enquiryHeading">Ask an Enquiry</h2>
+          <p class="section-intro">Send your question directly on WhatsApp. Your enquiry is not stored on this website.</p>
+        </div>
+        <form id="enquiryForm" class="enquiry-form">
+          <div class="field">
+            <label for="enquiryName">Your name <span aria-hidden="true">*</span></label>
+            <input id="enquiryName" name="name" type="text" maxlength="120" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="enquiryPhone">Phone (optional)</label>
+            <input id="enquiryPhone" name="phone" type="tel" maxlength="30" autocomplete="tel">
+          </div>
+          <div class="field">
+            <label for="enquiryMessage">Message <span aria-hidden="true">*</span></label>
+            <textarea id="enquiryMessage" name="message" rows="4" maxlength="1200" required></textarea>
+          </div>
+          <p id="enquiryStatus" class="cart-inline-message" role="status" aria-live="polite" hidden></p>
+          <button id="sendEnquiry" class="btn btn-primary" type="submit">Send Enquiry on WhatsApp</button>
+          <p id="enquiryUnavailable" class="muted small" hidden>WhatsApp enquiries are not available right now.</p>
+        </form>
+      </div>
+    </section>
+
+    <section id="aboutSection" class="section about-section" aria-labelledby="aboutSectionHeading">
       <div class="container about-layout">
         <div id="aboutPhotoWrap" class="about-photo-frame" hidden><img id="aboutPhoto" class="about-photo" alt=""></div>
         <div>
           <p class="section-kicker">Meet the author</p>
-          <h2 id="aboutHeading"><span id="aboutName"></span></h2>
+          <h2 id="aboutSectionHeading">About</h2>
           <p id="aboutBio" class="about-bio" hidden></p>
         </div>
       </div>
     </section>
 
-    <section id="contactSection" class="section contact-section" hidden aria-labelledby="contactHeading">
+    <section id="contactSection" class="section contact-section" aria-labelledby="contactHeading">
       <div class="container">
         <p class="section-kicker">Get in touch</p>
         <h2 id="contactHeading">Contact</h2>
@@ -111,7 +168,7 @@
   </main>
 
   <footer id="siteFooter" class="site-footer">
-    <div class="container footer-inner"><span id="footerName" class="footer-name" hidden></span><span>Printed books · Direct orders</span></div>
+    <div class="container footer-inner"><span id="footerName" class="footer-name">Dr M Devendramma Books</span><span>Printed books · Direct orders</span></div>
   </footer>
 
   <div id="cartBackdrop" class="cart-backdrop" hidden>
@@ -146,6 +203,12 @@
         </section>
       </div>
     </aside>
+  </div>
+
+  <div id="galleryLightbox" class="gallery-lightbox" role="dialog" aria-modal="true" aria-labelledby="galleryLightboxCaption" aria-hidden="true" hidden>
+    <button id="galleryLightboxClose" class="viewer-close gallery-lightbox-close" type="button" aria-label="Close gallery photo">×</button>
+    <img id="galleryLightboxImage" alt="" hidden>
+    <p id="galleryLightboxCaption" class="gallery-lightbox-caption"></p>
   </div>
 
   <div id="sampleViewer" class="viewer" role="dialog" aria-modal="true" aria-labelledby="viewerTitle" aria-hidden="true" hidden>
