@@ -22,6 +22,7 @@ const els = {
   errorMessage: $("#errorMessage"),
   errorWhatsApp: $("#errorWhatsApp"),
   emptyStore: $("#emptyStoreState"),
+  emptyStoreText: $("#emptyStoreText"),
   emptyStoreWhatsApp: $("#emptyStoreWhatsApp"),
   hero: $("#hero"),
   heroHeading: $("#heroHeading"),
