@@ -1,96 +1,95 @@
-# Dr M Devendramma Books — Phase 1 Admin
+# Dr M Devendramma Books
 
-This repository is a static GitHub Pages site. Phase 1 builds the private author admin first. The public storefront migration is intentionally held until the author confirms the admin works.
+A static, mobile-first author bookstore served by GitHub Pages. The customer site uses plain HTML, CSS and vanilla JavaScript ES modules. There is no build step, no customer login, and no application-data use of localStorage.
 
-## Admin URL
+## Public site
 
-After GitHub Pages deploys the main branch from the repository root:
+- Public URL: https://multigameweb.github.io/Books/
+- Admin URL (separate, not linked from the public site): https://multigameweb.github.io/Books/admin.html
+- Public homepage: index.html
+- Public stylesheet: css/public.css
+- Public Firestore client: js/public.js
+- Shared Firebase initialization: js/db.js
+- Firebase browser configuration: js/firebase-config.js
 
-- Admin: https://multigameweb.github.io/Books/admin.html
-- The public index.html does not link to admin.html.
+The page imports Firebase's modular SDK from the official gstatic CDN, using the same SDK version as the admin.
 
-## 1. Firebase project setup
+## How the public site reads Firestore
 
-Use the Firebase project **Dr M Devendramma Books**.
+### Site settings
 
-1. In Firebase Console, open **Project settings → General → Your apps**.
-2. Register a **Web app** if one does not already exist.
-3. Copy its firebaseConfig object.
-4. Open **js/firebase-config.js** in GitHub and replace the six PASTE_... values with the values from your own Firebase Web App config. Do not paste a service-account JSON or private key. Browser Firebase config is public; Firestore rules are what protect data.
-5. In **Authentication → Sign-in method**, enable **Google**.
-6. In **Authentication → Settings → Authorized domains**, ensure **multigameweb.github.io** is listed. Firebase Authentication does not use the full /Books/admin.html path in this setting.
+The public page reads the single document **settings/site** with these fields:
 
-The admin page intentionally disables the sign-in button until Firebase config and admin emails are filled in.
+- authorName
+- tagline
+- bio
+- authorPhoto
+- whatsappNumber (country code plus digits only)
+- phone
+- upiId
+- upiName
 
-## 2. Set the only allowed admin email
+Sections and individual contact actions are hidden when their backing setting is missing. The document is publicly readable according to firestore.rules so visitors can view the author profile and contact methods. Only the approved admin can write it.
 
-The author’s Google email must be listed in **both** places:
+### Books
 
-- **js/admin.js**: the ADMIN_EMAILS array.
-- **firestore.rules**: the email array inside isAdmin().
+The public page queries the **books** collection with a filter for **visible == true**, then sorts the returned documents by sortOrder on the client. It does not load hidden books into the public UI. Each book can have:
 
-The approved author account is currently devinaresh4@gmail.com. It is listed in js/admin.js and firestore.rules. To change or add an admin later, edit both locations and publish the updated rules in Firebase Console. Use the exact verified Google account email in lowercase.
+- title, author, price, description, category
+- amazonUrl (optional)
+- cover (a compressed data:image URL)
+- inStock (false disables ordering)
+- visible (must be true to be shown)
+- sortOrder
 
-The UI allowlist is only a user-experience check. The Firestore rules are the actual write-security boundary.
+Only valid data-image URLs are assigned to image src attributes. User-provided text is rendered through DOM text properties, not interpolated into HTML.
 
-## 3. Publish Firestore rules (mandatory before testing)
+### Sample page preview
 
-**Important:** Committing firestore.rules to GitHub does not publish it to Firebase automatically. Your current Firebase Console starter rule allows public reads and writes until you replace it.
+Sample pages are read from **books/{bookId}/pages** only after the visitor presses **Preview pages**. The full-screen viewer has previous/next buttons, arrow-key and swipe navigation, Escape/close support, and a visible SAMPLE overlay. There is no download button.
 
-1. Open Firebase Console → **Firestore Database → Rules**.
-2. Open this repository’s firestore.rules, copy the full contents into the Rules editor.
-3. Replace the email placeholders in that editor with the same approved email(s) used in js/admin.js.
-4. Check that the rule protects:
-   - books/{bookId}: public read, admin-only create/update/delete.
-   - books/{bookId}/pages/{pageId}: public read, admin-only create/update/delete.
-   - settings/{settingsId}: public read, admin-only create/update/delete.
-   - every other path: denied.
-5. Click **Publish**.
+### WhatsApp and UPI orders
 
-Do not leave the temporary open starter rules in production. They permit anyone with access to the project reference to change catalogue and settings data.
+Customers select quantities in memory on the current page; there is no customer login and no cart data is saved to localStorage. The order box asks for the customer name and calculates the total from the selected visible, in-stock books.
 
-## 4. Phase 1 admin features
+- **Send order on WhatsApp** opens a wa.me URL with the customer name, book titles, quantities, line totals, total amount, and a request for delivery details.
+- **Pay by UPI** opens a upi://pay link with the configured UPI ID, payee name, total in INR, and the “Book order” transaction note.
+- **Copy UPI ID** is available on desktop browsers.
 
-- Google sign-in using Firebase Authentication; popup with redirect fallback.
-- Email allowlist check and automatic sign-out for unauthorized accounts.
-- Books: list, add, edit, delete, change display order, toggle stock, toggle public visibility.
-- Book fields: title, author, integer INR price, description, category, optional Amazon URL, cover, 3–6 sample pages, stock/visibility, sort order, timestamps.
-- Settings document: settings/site with author name, tagline, bio, author photo, WhatsApp number, phone, UPI ID and UPI payee name.
-- No password, OTP or PIN login.
-- No application data is stored in localStorage.
-- Images are compressed in the browser and saved as data URLs in Firestore documents; Firebase Storage is not used.
-  - Covers: max 600 px wide.
-  - Sample pages: max 900 px wide, targeted below 300 KB per page document.
-  - Author photo: compressed for Firestore storage.
-- All database writes depend on the published Firestore rules.
+This site does not integrate a payment gateway. UPI hand-off is not proof that a payment completed; the author should confirm payment and order details separately.
 
-## 5. Image and content constraints
+## Firebase setup and security
 
-Choose JPG, PNG or WebP images. The admin converts them to JPEG before saving. If an image is still too large, choose a simpler/smaller source image. Sample pages are saved separately in books/{bookId}/pages/{pageId} so each one remains below the Firestore document-size limit.
+The project uses Firebase project **Dr M Devendramma Books**. The Firebase Web App config is in js/firebase-config.js. It is browser configuration, not a service-account secret. Never commit service-account JSON, private keys, access tokens, or other server secrets.
 
-Book descriptions and author text are rendered with DOM text properties in the admin interface to avoid interpreting user content as HTML.
+Firebase Console should have Google sign-in enabled. Add **multigameweb.github.io** under Authentication → Settings → Authorized domains.
 
-## 6. Deploy with GitHub Pages
+The approved admin email must match in both js/admin.js and firestore.rules. The browser allowlist is only a user-experience check; Firestore rules are the actual write-security boundary. Make sure the rules in this repository are published in Firebase Console → Firestore Database → Rules. GitHub commits do not publish Firestore rules automatically.
 
-1. Open the repository’s **Settings → Pages**.
-2. Select **Deploy from a branch**.
-3. Select branch **main** and folder **/(root)**, then Save.
-4. Wait for the Pages deployment to finish.
-5. Visit the Admin URL above.
+The rules allow public reads of books, book sample pages and settings, permit writes only for the verified email in isAdmin(), and deny all other paths.
 
-No build step or package installation is required. The app imports the modular Firebase SDK from the official gstatic CDN.
+## Deploy to GitHub Pages
 
-## 7. Phase 1 test checklist
+1. Open the repository Settings → Pages.
+2. Select **Deploy from a branch**, branch **main**, folder **/(root)**, and save.
+3. Wait for the Pages deployment to complete.
+4. Test the public site and the admin URL over HTTPS.
 
-Before asking for the public storefront, test the admin and the security rules:
+No npm installation, bundler, build command, or server is required.
 
-1. **Approved admin:** Sign in with the one approved Google account; Books and Settings should open.
-2. **Non-admin sign-in:** Sign in with a different Google account; the page should show “This account is not allowed” and sign that account out.
-3. **Rules enforce security:** In Firebase Console’s Rules Playground / Emulator, verify that an unauthenticated user and a signed-in non-admin cannot create or change a document under books, books/{id}/pages, or settings/site. The admin-page allowlist alone is not a security test.
-4. **Book entry:** Add a book with a cover and 3–6 sample pages. Refresh the admin; the book and page count should still be there.
-5. **Book changes:** Change its price; toggle “In stock” and “Visible on website”; move its order up/down; edit and delete a test entry.
-6. **Settings:** Save author name, tagline, bio, an author photo, a digits-only WhatsApp number, phone and UPI fields; refresh and confirm values persisted.
-7. **Telugu:** Enter Telugu characters in title/description/bio and confirm they display correctly using Noto Sans Telugu.
-8. **Unauthorized writes:** Ensure publishing firestore.rules is complete before treating any test as passed.
+## Phase 2 customer-site testing checklist
 
-The new public catalogue, WhatsApp order messages and UPI links are **Phase 2** and will be built only after you confirm Phase 1 admin testing.
+After adding or changing data through the admin, refresh the public site and check:
+
+1. A book added in Admin with **Visible on website** checked appears in the public Books grid.
+2. Changing a book price in Admin shows the updated price on refresh.
+3. Turning **Visible on website** off hides the book from the public page.
+4. Setting **In stock** off displays “Out of stock” and disables ordering for that book.
+5. Preview pages load only after tapping the button; the viewer opens/closes, arrows work, swipes work on a phone, Escape closes it, and the SAMPLE overlay stays visible.
+6. The WhatsApp link contains the right destination number and correctly encoded item/name/quantity/total message; the message asks for delivery details.
+7. The UPI link has the correct pa, pn, am, cu=INR, and tn=Book%20order values; Copy UPI ID works on desktop.
+8. Telugu text in book title, description, biography and author name renders with Noto Sans Telugu.
+9. Confirm missing contact fields and empty sections remain hidden, and test both the loading and error/fallback states.
+10. Try the site in mobile and desktop widths, light/dark mode, keyboard-only navigation and reduced-motion mode.
+
+The admin remains a separate noindex page and is not linked from the public site.
