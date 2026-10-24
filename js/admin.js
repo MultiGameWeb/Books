@@ -24,7 +24,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
 // Replace these placeholders with the exact author email(s). Keep this list in sync with firestore.rules.
-const ADMIN_EMAILS = ["ADMIN_EMAIL_1", "ADMIN_EMAIL_2"]
+const ADMIN_EMAILS = ["devinaresh4@gmail.com"]
   .map((email) => email.trim().toLowerCase())
   .filter((email) => email.includes("@") && !email.startsWith("admin_email_"));
 
