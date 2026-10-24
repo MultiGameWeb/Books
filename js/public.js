@@ -15,6 +15,7 @@ const els = {
   headerOrderLink: $("#headerOrderLink"),
   loading: $("#loadingState"),
   siteContent: $("#siteContent"),
+  emptyStoreState: $("#emptyStoreState"),
   error: $("#errorState"),
   errorMessage: $("#errorMessage"),
   fallback: $("#errorWhatsApp"),
@@ -584,6 +585,15 @@ async function start() {
 
   hideLoading();
   renderBooks();
+  const hasPublishedSiteDetails = Boolean(
+    String(settings.authorName || "").trim() ||
+    String(settings.tagline || "").trim() ||
+    String(settings.bio || "").trim() ||
+    safeDataImage(settings.authorPhoto) ||
+    safeWhatsAppNumber(settings.whatsappNumber) ||
+    safePhone(settings.phone)
+  );
+  els.emptyStoreState.hidden = books.length > 0 || hasPublishedSiteDetails;
   els.navBooks.hidden = books.length === 0;
   els.heroSeeBooks.hidden = books.length === 0;
   if (settingsResult.status === "rejected" || booksResult.status === "rejected") {
