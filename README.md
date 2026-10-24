@@ -29,7 +29,7 @@ The author’s Google email must be listed in **both** places:
 - **js/admin.js**: the ADMIN_EMAILS array.
 - **firestore.rules**: the email array inside isAdmin().
 
-Replace ADMIN_EMAIL_1 and ADMIN_EMAIL_2 with the approved email addresses. For one author account only, use the same real email in both slots (or remove the second entry from both files). Use the exact Google account email, lowercase, and do not add an address that should not have access.
+The approved author account is currently devinaresh4@gmail.com. It is listed in js/admin.js and firestore.rules. To change or add an admin later, edit both locations and publish the updated rules in Firebase Console. Use the exact verified Google account email in lowercase.
 
 The UI allowlist is only a user-experience check. The Firestore rules are the actual write-security boundary.
 
