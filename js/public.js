@@ -11,43 +11,34 @@ import {
 
 const $ = (selector) => document.querySelector(selector);
 const STORAGE_KEY = "drMDevendrammaBooks.cart.v1";
+const BRAND_FALLBACK = "Dr M Devendramma Books";
+const TAGLINE_FALLBACK = "Printed books by Dr M Devendramma";
 const els = {
-  header: $("#siteHeader"),
-  brandCopy: $("#brandCopy"),
+  headerWhatsApp: $("#headerWhatsApp"),
   brandName: $("#brandName"),
   brandTagline: $("#brandTagline"),
-  loading: $("#loadingState"),
-  siteContent: $("#siteContent"),
-  error: $("#errorState"),
-  errorMessage: $("#errorMessage"),
-  errorWhatsApp: $("#errorWhatsApp"),
-  emptyStore: $("#emptyStoreState"),
-  emptyStoreText: $("#emptyStoreText"),
-  emptyStoreWhatsApp: $("#emptyStoreWhatsApp"),
-  hero: $("#hero"),
-  heroHeading: $("#heroHeading"),
-  heroName: $("#heroName"),
+  siteError: $("#siteError"),
   heroTagline: $("#heroTagline"),
-  heroSeeBooks: $("#heroSeeBooks"),
-  booksSection: $("#booksSection"),
   booksGrid: $("#booksGrid"),
+  booksStatus: $("#booksStatus"),
   bookCount: $("#bookCount"),
   search: $("#bookSearch"),
-  booksEmpty: $("#booksEmpty"),
-  aboutSection: $("#aboutSection"),
-  aboutHeading: $("#aboutHeading"),
-  aboutName: $("#aboutName"),
+  galleryGrid: $("#galleryGrid"),
+  galleryStatus: $("#galleryStatus"),
+  enquiryForm: $("#enquiryForm"),
+  enquiryName: $("#enquiryName"),
+  enquiryPhone: $("#enquiryPhone"),
+  enquiryMessage: $("#enquiryMessage"),
+  enquiryStatus: $("#enquiryStatus"),
+  sendEnquiry: $("#sendEnquiry"),
+  enquiryUnavailable: $("#enquiryUnavailable"),
   aboutBio: $("#aboutBio"),
   aboutPhotoWrap: $("#aboutPhotoWrap"),
   aboutPhoto: $("#aboutPhoto"),
-  contactSection: $("#contactSection"),
   contactName: $("#contactName"),
   contactWhatsApp: $("#contactWhatsApp"),
   contactPhone: $("#contactPhone"),
   footerName: $("#footerName"),
-  navBooks: $("#navBooks"),
-  navAbout: $("#navAbout"),
-  navContact: $("#navContact"),
   cartToggle: $("#cartToggle"),
   cartCount: $("#cartCount"),
   cartBackdrop: $("#cartBackdrop"),
@@ -63,6 +54,10 @@ const els = {
   whatsappOrder: $("#whatsappOrder"),
   orderingUnavailable: $("#orderingUnavailable"),
   clearCart: $("#clearCart"),
+  galleryLightbox: $("#galleryLightbox"),
+  galleryLightboxClose: $("#galleryLightboxClose"),
+  galleryLightboxImage: $("#galleryLightboxImage"),
+  galleryLightboxCaption: $("#galleryLightboxCaption"),
   viewer: $("#sampleViewer"),
   viewerTitle: $("#viewerTitle"),
   viewerCount: $("#viewerCount"),
@@ -75,6 +70,7 @@ const els = {
 
 let settings = {};
 let books = [];
+let galleryImages = [];
 let cart = readCart();
 let currentWhatsAppNumber = "";
 let activePreview = { bookId: null, pages: [], index: 0 };
@@ -91,7 +87,8 @@ function readCart() {
       if (id && Number.isFinite(quantity) && quantity > 0 && quantity <= 99) result[id] = quantity;
     }
     return result;
-  } catch {
+  } catch (error) {
+    console.warn("Session cart could not be restored; using an in-memory cart.", error);
     return Object.create(null);
   }
 }
@@ -99,8 +96,8 @@ function readCart() {
 function saveCart() {
   try {
     window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
-  } catch {
-    // The in-memory cart still works if this browser blocks sessionStorage.
+  } catch (error) {
+    console.warn("Session storage is unavailable; cart remains in memory.", error);
   }
 }
 
@@ -171,13 +168,12 @@ function safeAmazonUrl(value) {
 }
 
 function priceOf(book) {
-  const price = Math.round(Number(book && book.price) || 0);
-  return Number.isFinite(price) && price >= 0 ? price : 0;
+  const value = Math.round(Number(book && book.price) || 0);
+  return Number.isFinite(value) && value >= 0 ? value : 0;
 }
 
 function money(amount) {
-  const value = Math.round(Number(amount) || 0);
-  return "Rs " + value.toLocaleString("en-IN");
+  return "Rs " + Math.round(Number(amount) || 0).toLocaleString("en-IN");
 }
 
 function updateMeta(name, content) {
@@ -214,57 +210,42 @@ function setHref(anchor, href) {
 function applySettings(value) {
   settings = value && typeof value === "object" ? value : {};
   const authorName = String(settings.authorName || "").trim();
-  const tagline = String(settings.tagline || "").trim();
+  const tagline = String(settings.tagline || "").trim() || TAGLINE_FALLBACK;
   const bio = String(settings.bio || "").trim();
   const hasPhoto = safeDataImage(settings.authorPhoto);
   currentWhatsAppNumber = safeWhatsAppNumber(settings.whatsappNumber);
   const phone = safePhone(settings.phone);
+  const brandName = authorName || BRAND_FALLBACK;
 
-  setText(els.brandName, authorName, true);
-  setText(els.brandTagline, tagline, true);
-  els.brandName.hidden = !authorName;
-  els.brandCopy.hidden = !authorName && !tagline;
-  els.brandTagline.hidden = !tagline;
+  setText(els.brandName, brandName);
+  setText(els.brandTagline, authorName ? String(settings.tagline || "").trim() : "");
+  els.brandTagline.hidden = !String(settings.tagline || "").trim();
 
-  setText(els.heroName, authorName);
-  els.heroHeading.hidden = !authorName;
   setText(els.heroTagline, tagline);
-  els.heroTagline.hidden = !tagline;
-  els.hero.hidden = !(authorName || tagline);
-  els.heroSeeBooks.hidden = books.length === 0;
-
-  setText(els.aboutName, authorName);
-  els.aboutHeading.hidden = !authorName;
   setText(els.aboutBio, bio);
   els.aboutBio.hidden = !bio;
   els.aboutPhotoWrap.hidden = !hasPhoto;
-  if (hasPhoto) setDataImage(els.aboutPhoto, settings.authorPhoto, authorName ? "Portrait of " + authorName : "Author portrait");
-  else {
+  if (hasPhoto) {
+    setDataImage(els.aboutPhoto, settings.authorPhoto, authorName ? "Portrait of " + authorName : "Author portrait");
+  } else {
     els.aboutPhoto.removeAttribute("src");
     els.aboutPhoto.hidden = true;
   }
-  els.aboutSection.hidden = !(bio || hasPhoto);
 
-  setText(els.contactName, authorName, true);
   const waUrl = currentWhatsAppNumber ? "https://wa.me/" + currentWhatsAppNumber : "";
+  setHref(els.headerWhatsApp, waUrl);
   setHref(els.contactWhatsApp, waUrl);
   const phoneHref = phone ? "tel:" + phone.replace(/[^+0-9]/g, "") : "";
   setHref(els.contactPhone, phoneHref);
-  els.contactSection.hidden = !waUrl && !phoneHref;
 
-  setText(els.footerName, authorName, true);
-  els.footerName.hidden = !authorName;
-
-  const title = authorName ? authorName + " | Printed Books" : "Printed Books";
-  document.title = title;
-  const description = (bio || tagline || "").replace(/\s+/g, " ").slice(0, 300);
-  updateMeta("description", description);
-  updatePropertyMeta("og:title", title);
-  updatePropertyMeta("og:description", description);
+  setText(els.contactName, authorName, true);
+  setText(els.footerName, brandName);
+  updateMeta("description", (bio || tagline).replace(/\s+/g, " ").slice(0, 300));
+  updatePropertyMeta("og:title", brandName);
+  updatePropertyMeta("og:description", (bio || tagline).replace(/\s+/g, " ").slice(0, 300));
   updatePropertyMeta("og:image", hasPhoto ? settings.authorPhoto : "");
-
-  setHref(els.emptyStoreWhatsApp, waUrl);
-  setHref(els.errorWhatsApp, waUrl);
+  els.enquiryUnavailable.hidden = Boolean(currentWhatsAppNumber);
+  els.sendEnquiry.hidden = !currentWhatsAppNumber;
 }
 
 function sortBooks(list) {
@@ -272,6 +253,14 @@ function sortBooks(list) {
     const orderA = Number.isFinite(Number(a.sortOrder)) ? Number(a.sortOrder) : Number.MAX_SAFE_INTEGER;
     const orderB = Number.isFinite(Number(b.sortOrder)) ? Number(b.sortOrder) : Number.MAX_SAFE_INTEGER;
     return orderA - orderB || String(a.title || "").localeCompare(String(b.title || ""));
+  });
+}
+
+function sortGallery(list) {
+  return [...list].sort((a, b) => {
+    const orderA = Number.isFinite(Number(a.sortOrder)) ? Number(a.sortOrder) : Number.MAX_SAFE_INTEGER;
+    const orderB = Number.isFinite(Number(b.sortOrder)) ? Number(b.sortOrder) : Number.MAX_SAFE_INTEGER;
+    return orderA - orderB || String(a.caption || "").localeCompare(String(b.caption || ""));
   });
 }
 
@@ -357,17 +346,15 @@ function buildBookCard(book) {
     const minus = makeButton("−", "qty-button", () => changeQuantity(book.id, -1), "Decrease quantity of " + String(book.title || "book"));
     const amount = createElement("span", "qty-value", quantity);
     const plus = makeButton("+", "qty-button", () => changeQuantity(book.id, 1), "Increase quantity of " + String(book.title || "book"));
-    plus.disabled = book.inStock === false || quantity >= 99;
     minus.disabled = quantity <= 0;
+    plus.disabled = book.inStock === false || quantity >= 99;
     stepper.append(minus, amount, plus);
     controls.append(stepper);
   } else {
     controls.append(makeButton("Add to cart", "btn btn-primary btn-small", () => addToCart(book.id), "Add " + String(book.title || "book") + " to cart"));
   }
 
-  const preview = makeButton("Preview pages", "btn btn-outline btn-small", () => openPreview(book));
-  preview.setAttribute("aria-label", "Preview pages for " + String(book.title || "book"));
-  controls.append(preview);
+  controls.append(makeButton("Preview pages", "btn btn-outline btn-small", () => openPreview(book), "Preview pages for " + String(book.title || "book")));
   const amazon = safeAmazonUrl(book.amazonUrl);
   if (amazon) {
     const link = createElement("a", "btn btn-outline btn-small", "Also on Amazon ↗");
@@ -389,22 +376,12 @@ function renderBooks() {
   });
 
   els.booksGrid.replaceChildren();
-  for (const book of filtered) els.booksGrid.append(buildBookCard(book));
-  setText(els.bookCount, filtered.length === books.length ? String(books.length) + (books.length === 1 ? " book" : " books") : filtered.length + " of " + books.length + " books");
-  els.booksEmpty.hidden = filtered.length !== 0;
-  els.booksSection.hidden = books.length === 0;
-  els.emptyStore.hidden = books.length !== 0;
-  els.hero.hidden = books.length === 0 || !(String(settings.authorName || "").trim() || String(settings.tagline || "").trim());
-  els.heroHeading.hidden = !String(settings.authorName || "").trim();
-  els.heroTagline.hidden = !String(settings.tagline || "").trim();
-  els.heroSeeBooks.hidden = books.length === 0;
-  els.aboutSection.hidden = books.length === 0 || !(String(settings.bio || "").trim() || safeDataImage(settings.authorPhoto));
-  els.contactSection.hidden = books.length === 0 || !(currentWhatsAppNumber || safePhone(settings.phone));
-  els.navBooks.hidden = books.length === 0;
-  els.navAbout.hidden = els.aboutSection.hidden;
-  els.navContact.hidden = els.contactSection.hidden;
-  if (books.length === 0) {
-    setText(els.emptyStoreText, "");
+  filtered.forEach((book) => els.booksGrid.append(buildBookCard(book)));
+  setText(els.bookCount, String(books.length) + (books.length === 1 ? " book" : " books"));
+  if (filtered.length === 0) {
+    setText(els.booksStatus, searchText ? "No matching books." : "New books are being added.");
+  } else {
+    els.booksStatus.hidden = true;
   }
   updateCartCount();
   renderCart();
@@ -454,11 +431,9 @@ function renderCart() {
       minus.disabled = quantity <= 0;
       plus.disabled = !book || book.inStock === false || quantity >= 99;
       stepper.append(minus, amount, plus);
-      const remove = makeButton("Remove", "btn btn-outline btn-small", () => removeFromCart(id), "Remove item from cart");
-      actions.append(stepper, remove);
+      actions.append(stepper, makeButton("Remove", "btn btn-outline btn-small", () => removeFromCart(id), "Remove item from cart"));
       row.append(details, actions);
-      const lineTotal = book && book.inStock !== false ? money(priceOf(book) * quantity) : "—";
-      row.append(createElement("strong", "cart-item-total", lineTotal));
+      row.append(createElement("strong", "cart-item-total", book && book.inStock !== false ? money(priceOf(book) * quantity) : "—"));
       els.cartItems.append(row);
     }
   }
@@ -475,29 +450,22 @@ function updateOrderValidation(state = currentCartState()) {
   const location = String(els.deliveryLocation.value || "").trim();
   const hasWhatsApp = Boolean(currentWhatsAppNumber);
   const hasUnavailable = state.unavailable.length > 0;
-  const hasItems = state.items.length > 0 && state.total >= 0;
+  const hasItems = state.items.length > 0;
 
   els.whatsappOrder.hidden = !hasWhatsApp;
   els.orderingUnavailable.hidden = hasWhatsApp;
   els.whatsappOrder.disabled = !hasWhatsApp || !name || !location || !hasItems || hasUnavailable;
 
   let message = "";
-  if (!hasWhatsApp) {
-    message = "Ordering is not available right now.";
-  } else if (hasUnavailable) {
-    message = "Remove unavailable or out-of-stock books before ordering.";
-  } else if (state.ids.length === 0 || !state.items.length) {
-    message = "Add at least one available book to your cart.";
-  } else if (!name && !location) {
-    message = "Enter your customer name and delivery location to enable ordering.";
-  } else if (!name) {
-    message = "Please enter your customer name.";
-  } else if (!location) {
-    message = "Please enter your delivery location.";
-  } else {
-    message = "Your order is ready to send on WhatsApp.";
-  }
-  setText(els.orderValidation, hasWhatsApp ? message : "", true);
+  if (!hasWhatsApp) message = "";
+  else if (hasUnavailable) message = "Remove unavailable or out-of-stock books before ordering.";
+  else if (!state.items.length) message = "Add at least one available book to your cart.";
+  else if (!name && !location) message = "Enter your customer name and delivery location to enable ordering.";
+  else if (!name) message = "Please enter your customer name.";
+  else if (!location) message = "Please enter your delivery location.";
+  else message = "Your order is ready to send on WhatsApp.";
+  setText(els.orderValidation, message);
+  els.orderValidation.hidden = !message;
 }
 
 function openCart() {
@@ -517,12 +485,8 @@ function closeCart() {
   els.cartToggle.focus();
 }
 
-function buildWhatsAppMessage(state, name, location, phone) {
-  const lines = [
-    "New book order",
-    "Name: " + name,
-    "Location: " + location
-  ];
+function buildWhatsAppOrderMessage(state, name, location, phone) {
+  const lines = ["New book order", "Name: " + name, "Location: " + location];
   if (phone) lines.push("Phone: " + phone);
   lines.push("Books:");
   state.items.forEach((item, index) => {
@@ -541,10 +505,47 @@ function sendWhatsAppOrder() {
   updateOrderValidation(state);
   if (!currentWhatsAppNumber || !name || !location || !state.items.length || state.unavailable.length) return;
 
-  const message = buildWhatsAppMessage(state, name, location, phone);
+  const message = buildWhatsAppOrderMessage(state, name, location, phone);
   const url = "https://wa.me/" + currentWhatsAppNumber + "?text=" + encodeURIComponent(message);
   window.open(url, "_blank", "noopener,noreferrer");
-  // Do not clear cart or form automatically. The customer clears it explicitly.
+}
+
+function renderGallery() {
+  els.galleryGrid.replaceChildren();
+  const visibleImages = galleryImages.filter((item) => safeDataImage(item.image));
+  visibleImages.forEach((item) => {
+    const button = createElement("button", "gallery-card");
+    button.type = "button";
+    button.setAttribute("aria-label", String(item.caption || "Open gallery photo"));
+    const image = createElement("img", "gallery-image");
+    image.loading = "lazy";
+    setDataImage(image, item.image, String(item.caption || "Gallery photo"));
+    button.append(image);
+    if (String(item.caption || "").trim()) button.append(createElement("span", "gallery-caption", item.caption));
+    button.addEventListener("click", () => openGalleryPhoto(item));
+    els.galleryGrid.append(button);
+  });
+  setText(els.galleryStatus, visibleImages.length ? "" : "Photos coming soon");
+  els.galleryStatus.hidden = visibleImages.length > 0;
+}
+
+function openGalleryPhoto(item) {
+  if (!safeDataImage(item.image)) return;
+  setDataImage(els.galleryLightboxImage, item.image, String(item.caption || "Gallery photo"));
+  setText(els.galleryLightboxCaption, item.caption || "");
+  els.galleryLightboxCaption.hidden = !String(item.caption || "").trim();
+  els.galleryLightbox.hidden = false;
+  els.galleryLightbox.setAttribute("aria-hidden", "false");
+  document.body.classList.add("gallery-lightbox-open");
+  els.galleryLightboxClose.focus();
+}
+
+function closeGalleryPhoto() {
+  els.galleryLightbox.hidden = true;
+  els.galleryLightbox.setAttribute("aria-hidden", "true");
+  els.galleryLightboxImage.removeAttribute("src");
+  els.galleryLightboxImage.hidden = true;
+  document.body.classList.remove("gallery-lightbox-open");
 }
 
 async function openPreview(book) {
@@ -580,7 +581,8 @@ async function openPreview(book) {
     }
     els.viewerMessage.hidden = true;
     updatePreviewFrame();
-  } catch {
+  } catch (error) {
+    console.error("Failed to load sample pages for book " + book.id, error);
     if (token !== previewRequestToken) return;
     setText(els.viewerMessage, "Could not load sample pages. Please try again later.");
   }
@@ -616,11 +618,9 @@ function closePreview() {
   activePreview = { bookId: null, pages: [], index: 0 };
 }
 
-function showLoadError(message) {
-  setText(els.errorMessage, message);
-  setHref(els.errorWhatsApp, currentWhatsAppNumber ? "https://wa.me/" + currentWhatsAppNumber : "");
-  if (!currentWhatsAppNumber) els.errorWhatsApp.hidden = true;
-  els.error.hidden = false;
+function setSiteError(error, source) {
+  console.error(source, error);
+  els.siteError.hidden = false;
 }
 
 async function readSettings() {
@@ -633,29 +633,51 @@ async function readVisibleBooks() {
   return sortBooks(snapshot.docs.map((entry) => ({ id: entry.id, ...entry.data() })));
 }
 
+async function readVisibleGallery() {
+  const snapshot = await getDocs(query(collection(db, "gallery"), where("visible", "==", true)));
+  return sortGallery(snapshot.docs.map((entry) => ({ id: entry.id, ...entry.data() })));
+}
+
 async function start() {
   if (!isFirebaseConfigured() || !db) {
-    els.loading.hidden = true;
-    els.siteContent.hidden = false;
-    showLoadError("The bookstore could not connect to its catalogue. Please try again later.");
+    const error = new Error("Firebase is not configured for the public bookstore.");
+    setSiteError(error, "Public bookstore initialisation failed:");
+    applySettings({});
+    setText(els.booksStatus, "New books are being added.");
+    els.galleryStatus.textContent = "Photos coming soon";
+    renderCart();
     return;
   }
 
-  const [settingsResult, booksResult] = await Promise.allSettled([readSettings(), readVisibleBooks()]);
-  if (settingsResult.status === "fulfilled") applySettings(settingsResult.value);
-  else applySettings({});
-  if (booksResult.status === "fulfilled") books = booksResult.value;
+  const [settingsResult, booksResult, galleryResult] = await Promise.allSettled([
+    readSettings(),
+    readVisibleBooks(),
+    readVisibleGallery()
+  ]);
 
-  els.loading.hidden = true;
-  els.siteContent.hidden = false;
-  if (booksResult.status === "rejected") {
-    els.emptyStore.hidden = true;
-    showLoadError("The book catalogue could not be loaded from Firestore. Please try again later.");
-  } else {
-    els.error.hidden = settingsResult.status === "rejected";
-    if (settingsResult.status === "rejected") showLoadError("Author settings could not be loaded. WhatsApp ordering may be unavailable until they are saved.");
-    renderBooks();
+  if (settingsResult.status === "fulfilled") applySettings(settingsResult.value);
+  else {
+    applySettings({});
+    setSiteError(settingsResult.reason, "Could not load Firestore document settings/site:");
   }
+
+  if (booksResult.status === "fulfilled") {
+    books = booksResult.value;
+  } else {
+    books = [];
+    setSiteError(booksResult.reason, "Could not load the public books collection:");
+  }
+
+  if (galleryResult.status === "fulfilled") {
+    galleryImages = galleryResult.value;
+  } else {
+    galleryImages = [];
+    setSiteError(galleryResult.reason, "Could not load the public gallery collection:");
+  }
+
+  renderBooks();
+  renderGallery();
+  renderCart();
 }
 
 els.cartToggle.addEventListener("click", openCart);
@@ -675,6 +697,35 @@ els.deliveryLocation.addEventListener("input", () => updateOrderValidation());
 els.alternatePhone.addEventListener("input", () => updateOrderValidation());
 els.search.addEventListener("input", renderBooks);
 
+els.enquiryForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const name = String(els.enquiryName.value || "").trim();
+  const phone = String(els.enquiryPhone.value || "").trim();
+  const message = String(els.enquiryMessage.value || "").trim();
+  if (!name || !message) {
+    setText(els.enquiryStatus, "Please enter your name and message.");
+    els.enquiryStatus.hidden = false;
+    return;
+  }
+  if (!currentWhatsAppNumber) {
+    setText(els.enquiryStatus, "WhatsApp enquiries are not available right now.");
+    els.enquiryStatus.hidden = false;
+    return;
+  }
+  const lines = ["New enquiry", "Name: " + name];
+  if (phone) lines.push("Phone: " + phone);
+  lines.push("Message:", message);
+  const url = "https://wa.me/" + currentWhatsAppNumber + "?text=" + encodeURIComponent(lines.join("\n"));
+  window.open(url, "_blank", "noopener,noreferrer");
+  setText(els.enquiryStatus, "WhatsApp opened with your enquiry. Your message has not been stored on this website.");
+  els.enquiryStatus.hidden = false;
+});
+
+els.galleryLightboxClose.addEventListener("click", closeGalleryPhoto);
+els.galleryLightbox.addEventListener("click", (event) => {
+  if (event.target === els.galleryLightbox) closeGalleryPhoto();
+});
+
 els.viewerClose.addEventListener("click", closePreview);
 els.viewerPrev.addEventListener("click", () => movePreview(-1));
 els.viewerNext.addEventListener("click", () => movePreview(1));
@@ -682,11 +733,12 @@ els.viewer.addEventListener("click", (event) => {
   if (event.target === els.viewer) closePreview();
 });
 document.addEventListener("keydown", (event) => {
-  if (!els.cartBackdrop.hidden && event.key === "Escape") {
+  if (event.key === "Escape" && !els.cartBackdrop.hidden) {
     closeCart();
     return;
   }
-  if (!els.viewer.hidden && event.key === "Escape") closePreview();
+  if (event.key === "Escape" && !els.galleryLightbox.hidden) closeGalleryPhoto();
+  if (event.key === "Escape" && !els.viewer.hidden) closePreview();
   if (!els.viewer.hidden && event.key === "ArrowLeft") movePreview(-1);
   if (!els.viewer.hidden && event.key === "ArrowRight") movePreview(1);
 });
@@ -701,8 +753,9 @@ $("#viewerStage").addEventListener("touchend", (event) => {
   if (Math.abs(delta) >= 45) movePreview(delta > 0 ? -1 : 1);
 }, { passive: true });
 
-start().catch(() => {
-  els.loading.hidden = true;
-  els.siteContent.hidden = false;
-  showLoadError("The bookstore could not be loaded right now. Please refresh and try again.");
+start().catch((error) => {
+  setSiteError(error, "Unexpected error while loading the public bookstore:");
+  setText(els.booksStatus, "New books are being added.");
+  setText(els.galleryStatus, "Photos coming soon");
+  renderCart();
 });
