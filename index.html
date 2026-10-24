@@ -16,13 +16,13 @@
   <script type="module" src="js/public.js"></script>
 </head>
 <body>
-  <header id="siteHeader" class="site-header" hidden>
+  <header id="siteHeader" class="site-header">
     <div class="container header-inner">
-      <a id="brand" class="brand" href="index.html" hidden aria-label="Home">
+      <a id="brand" class="brand" href="index.html" aria-label="Home">
         <span class="brand-icon" aria-hidden="true">▰</span>
-        <span class="brand-copy">
+        <span id="brandCopy" class="brand-copy" hidden>
           <span id="brandName" class="brand-name"></span>
-          <span id="brandTagline" class="brand-tagline"></span>
+          <span id="brandTagline" class="brand-tagline" hidden></span>
         </span>
       </a>
       <nav class="site-nav" aria-label="Main navigation">
@@ -30,7 +30,9 @@
         <a id="navAbout" href="#aboutSection" hidden>About</a>
         <a id="navContact" href="#contactSection" hidden>Contact</a>
       </nav>
-      <a id="headerOrderLink" class="header-bookmark" href="#orderSection" aria-label="Go to your order" hidden>Your order ↓</a>
+      <button id="cartToggle" class="btn btn-outline btn-small cart-toggle" type="button" aria-controls="cartDrawer" aria-expanded="false">
+        Cart <span id="cartCount" class="cart-count" aria-label="items in cart">0</span>
+      </button>
     </div>
   </header>
 
@@ -44,18 +46,22 @@
   </div>
 
   <main id="siteContent" hidden>
-    <section id="emptyStoreState" class="container state-panel" hidden aria-live="polite" style="margin-block:28px">
-    <div><h1 class="empty-store-title">Our bookstore is getting ready</h1><p>Book listings and author details will appear here when they are published. Please check back soon.</p></div>
-  </section>
+    <section id="emptyStoreState" class="container state-panel empty-store" hidden aria-live="polite">
+      <div>
+        <h1 class="empty-store-title">Books will be available soon</h1>
+        <p id="emptyStoreText" class="empty-store-text"></p>
+        <a id="emptyStoreWhatsApp" class="btn btn-primary" href="#" target="_blank" rel="noopener noreferrer" hidden>Contact on WhatsApp</a>
+      </div>
+    </section>
 
-  <section id="hero" class="hero" hidden aria-labelledby="heroName">
+    <section id="hero" class="hero" hidden aria-labelledby="heroName">
       <div class="container hero-inner">
         <div>
           <p class="eyebrow">Author's collection</p>
-          <h1 class="hero-title"><span id="heroName"></span></h1>
-          <p id="heroTagline" class="hero-tagline"></p>
+          <h1 class="hero-title" id="heroHeading" hidden><span id="heroName"></span></h1>
+          <p id="heroTagline" class="hero-tagline" hidden></p>
           <div class="hero-actions">
-            <a id="heroSeeBooks" class="btn btn-primary" href="#booksSection" hidden>See books <span aria-hidden="true">→</span></a>
+            <a id="heroSeeBooks" class="btn btn-primary" href="#booksSection">See books <span aria-hidden="true">→</span></a>
           </div>
           <p class="hero-note"><span class="hero-note-dot" aria-hidden="true"></span>Printed books, selected by the author</p>
         </div>
@@ -68,7 +74,7 @@
           <div>
             <p class="section-kicker">Explore the collection</p>
             <h2 id="booksHeading">Books</h2>
-            <p class="section-intro">Browse the available printed editions and select the books you would like to order.</p>
+            <p class="section-intro">Browse available printed editions and add books to your cart.</p>
           </div>
           <div id="bookCount" class="book-count" aria-live="polite"></div>
         </div>
@@ -76,45 +82,7 @@
           <label class="search-field"><span aria-hidden="true">⌕</span><span class="search-visible-label">Search</span><input id="bookSearch" type="search" aria-label="Search books, authors or topics" autocomplete="off"></label>
         </div>
         <div id="booksGrid" class="book-grid"></div>
-        <div id="booksEmpty" class="state-panel" hidden><p></p></div>
-      </div>
-    </section>
-
-    <section id="orderSection" class="section order-section" hidden aria-labelledby="orderHeading">
-      <div class="container">
-        <div class="section-head">
-          <div><p class="section-kicker">Your selection</p><h2 id="orderHeading">Your order</h2><p class="section-intro">Review quantities and total before sending your order to the author.</p></div>
-        </div>
-        <div class="order-layout">
-          <div class="order-card">
-            <h3>Selected books</h3>
-            <div id="orderList" class="order-list"></div>
-            <div id="orderEmpty" class="muted small" hidden></div>
-            <div class="order-total-row"><span>Total</span><span id="orderTotal" class="order-total">₹0</span></div>
-          </div>
-          <div class="order-card">
-            <h3>Order details</h3>
-            <div class="field">
-              <label for="customerName">Your name</label>
-              <input id="customerName" type="text" maxlength="120" autocomplete="name">
-            </div>
-            <p id="orderStatus" class="order-hint" role="status" aria-live="polite" hidden></p>
-            <div class="order-actions">
-              <button id="whatsappOrder" class="btn btn-primary" type="button">Send order on WhatsApp</button>
-            </div>
-            <div id="upiSection" hidden>
-              <div class="divider"></div>
-              <h3>Pay by UPI</h3>
-              <p class="muted small">Open your UPI app to make the payment using the order total shown here.</p>
-              <button id="upiPay" class="btn btn-gold" type="button">Pay by UPI</button>
-              <div class="upi-copy">
-                <span id="upiIdText" class="upi-id"></span>
-                <button id="copyUpi" class="btn btn-outline btn-small copy-desktop" type="button">Copy UPI ID</button>
-              </div>
-            </div>
-            <p class="order-hint">Delivery details can be confirmed with the author on WhatsApp.</p>
-          </div>
-        </div>
+        <div id="booksEmpty" class="state-panel" hidden><p>No matching books.</p></div>
       </div>
     </section>
 
@@ -124,7 +92,7 @@
         <div>
           <p class="section-kicker">Meet the author</p>
           <h2 id="aboutHeading"><span id="aboutName"></span></h2>
-          <p id="aboutBio" class="about-bio"></p>
+          <p id="aboutBio" class="about-bio" hidden></p>
         </div>
       </div>
     </section>
@@ -133,19 +101,52 @@
       <div class="container">
         <p class="section-kicker">Get in touch</p>
         <h2 id="contactHeading">Contact</h2>
-        <p id="contactName" class="section-intro"></p>
+        <p id="contactName" class="section-intro" hidden></p>
         <div class="contact-actions">
           <a id="contactWhatsApp" class="btn btn-primary" href="#" target="_blank" rel="noopener noreferrer" hidden>Message on WhatsApp</a>
           <a id="contactPhone" class="btn btn-outline" href="#" hidden>Call</a>
         </div>
-        <p class="contact-note">For book orders, please include the titles and quantities you selected.</p>
       </div>
     </section>
   </main>
 
-  <footer id="siteFooter" class="site-footer" hidden>
-    <div class="container footer-inner"><span id="footerName" class="footer-name"></span><span>Printed books · Direct orders</span></div>
+  <footer id="siteFooter" class="site-footer">
+    <div class="container footer-inner"><span id="footerName" class="footer-name" hidden></span><span>Printed books · Direct orders</span></div>
   </footer>
+
+  <div id="cartBackdrop" class="cart-backdrop" hidden>
+    <aside id="cartDrawer" class="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cartHeading" aria-hidden="true">
+      <div class="cart-panel-head">
+        <div><p class="section-kicker">Your selection</p><h2 id="cartHeading">Shopping cart</h2></div>
+        <button id="cartClose" class="viewer-close cart-close" type="button" aria-label="Close cart">×</button>
+      </div>
+      <div class="cart-scroll">
+        <div id="cartItems" class="cart-items"></div>
+        <p id="cartUnavailableMessage" class="cart-inline-message" hidden></p>
+        <div class="cart-total-row"><span>Grand total</span><strong id="cartGrandTotal">Rs 0</strong></div>
+        <section class="cart-checkout" aria-labelledby="checkoutHeading">
+          <h3 id="checkoutHeading">Delivery details</h3>
+          <div class="field">
+            <label for="customerName">Customer name <span aria-hidden="true">*</span></label>
+            <input id="customerName" type="text" maxlength="120" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="deliveryLocation">Delivery location <span aria-hidden="true">*</span></label>
+            <textarea id="deliveryLocation" rows="4" maxlength="1000" autocomplete="street-address" placeholder="House / street, area, city, pincode" required></textarea>
+          </div>
+          <div class="field">
+            <label for="alternatePhone">Alternate phone (optional)</label>
+            <input id="alternatePhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="30">
+          </div>
+          <p id="orderValidation" class="cart-inline-message" role="status" aria-live="polite"></p>
+          <button id="whatsappOrder" class="btn btn-primary cart-order-button" type="button" disabled>Order on WhatsApp</button>
+          <p id="orderingUnavailable" class="muted small" hidden>Ordering is not available right now.</p>
+          <button id="clearCart" class="btn btn-outline clear-cart-button" type="button">Clear cart</button>
+          <p class="cart-footnote">Delivery charges, if any, will be confirmed on WhatsApp.</p>
+        </section>
+      </div>
+    </aside>
+  </div>
 
   <div id="sampleViewer" class="viewer" role="dialog" aria-modal="true" aria-labelledby="viewerTitle" aria-hidden="true" hidden>
     <div class="viewer-header">
