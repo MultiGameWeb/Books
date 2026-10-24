@@ -11,6 +11,8 @@ import {
 
 const $ = (selector) => document.querySelector(selector);
 const els = {
+  header: $("#siteHeader"),
+  headerOrderLink: $("#headerOrderLink"),
   loading: $("#loadingState"),
   siteContent: $("#siteContent"),
   error: $("#errorState"),
@@ -317,7 +319,10 @@ function renderBooks() {
   els.booksSection.hidden = books.length === 0;
   els.orderSection.hidden = books.length === 0;
   els.navBooks.hidden = books.length === 0;
+  els.headerOrderLink.hidden = books.length === 0;
   els.heroSeeBooks.hidden = books.length === 0;
+  const hasNavLinks = !els.navBooks.hidden || !els.navAbout.hidden || !els.navContact.hidden;
+  els.header.hidden = els.brand.hidden && !hasNavLinks && els.headerOrderLink.hidden;
   renderOrder();
 }
 
@@ -560,6 +565,7 @@ async function start() {
     handleStateError("The bookstore could not connect to its catalogue. Please try again later.");
     els.booksSection.hidden = true;
     els.orderSection.hidden = true;
+    els.header.hidden = true;
     return;
   }
 
@@ -594,5 +600,6 @@ start().catch(() => {
   els.siteContent.hidden = false;
   els.booksSection.hidden = true;
   els.orderSection.hidden = true;
+  els.header.hidden = true;
   handleStateError("The bookstore could not be loaded right now. Please refresh and try again.");
 });
