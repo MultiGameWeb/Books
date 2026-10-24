@@ -6,9 +6,12 @@ A static, mobile-first author bookstore served by GitHub Pages. The public site 
 
 - Public URL: https://multigameweb.github.io/Books/
 - Separate admin URL: https://multigameweb.github.io/Books/admin.html
+- Separate gallery manager (approved author sign-in): https://multigameweb.github.io/Books/gallery-admin.html
 - Public homepage: `index.html`
 - Public stylesheet: `css/public.css`
-- Public storefront and cart: `js/public.js`
+- Public storefront, gallery, enquiry form and cart: `js/public.js`
+- Offline CSS 3D book hero animation: `book-animation.js` and `css/book-animation.css`
+- Separate gallery manager: `gallery-admin.html` and `js/gallery-admin.js`; image compression reuses `js/images.js`
 - Shared Firebase initialization: `js/db.js`
 - Firebase browser configuration: `js/firebase-config.js`
 
@@ -29,6 +32,8 @@ The public site reads the document `settings/site` and uses these fields when pr
 - `whatsappNumber` (country code and digits)
 - `phone` (optional)
 
+The public page structure remains visible even when these fields are missing. The brand falls back to **Dr M Devendramma Books**, and the hero tagline falls back to **Printed books by Dr M Devendramma**. Optional biography, photo, phone and WhatsApp actions are hidden only when their source values are missing.
+
 Missing optional settings are hidden. The public page ignores any UPI fields.
 
 ### Books
@@ -48,6 +53,17 @@ Images are assigned only after checking their data-image type. Text from Firesto
 
 Sample pages remain lazy-loaded from `books/{bookId}/pages` only after the visitor taps **Preview pages**.
 
+### Gallery photos
+
+The public page queries the `gallery` collection with `visible == true`, sorts by `sortOrder`, and displays documents with these fields:
+
+- `image`: compressed JPEG data URL, stored by the gallery manager
+- `caption`: optional caption text
+- `sortOrder`: numeric display position
+- `visible`: must be `true` to appear publicly
+
+The public Gallery uses a lightbox. With no visible gallery images it shows **Photos coming soon**. The separate `gallery-admin.html` page requires Google sign-in as the verified approved author account and supports adding, hiding/showing and deleting gallery photos. It uses `compressImage` from `js/images.js`; existing admin files remain unchanged.
+
 ## WhatsApp-only ordering
 
 There is no payment gateway, UPI flow, or order write to Firestore. The website opens a WhatsApp message addressed to the phone number in `settings/site.whatsappNumber`.
@@ -59,6 +75,8 @@ There is no payment gateway, UPI flow, or order write to Firestore. The website 
 5. The cart is not cleared when WhatsApp opens. Customers can remove individual books or tap **Clear cart** themselves.
 
 The cart contains only book document IDs and quantities in memory and `sessionStorage`, so it can survive a refresh in the same browser tab/session. Customer name, delivery location and alternate phone are not saved to browser storage. No orders or customer details are written to Firestore. If the WhatsApp number is missing, the order button is hidden and the site displays **Ordering is not available right now**.
+
+The enquiry form also opens a prefilled WhatsApp message and does not write to Firestore. The hero book-stack animation uses local CSS 3D transforms and JavaScript only; it has no Three.js or animation CDN dependency, is reduced-motion aware, and is lighter on mobile.
 
 When no visible books exist in Firestore, the site shows **Books will be available soon** and displays a WhatsApp contact link only if a valid number is configured. The header and footer stay visible. It never substitutes example books or placeholder author data.
 
