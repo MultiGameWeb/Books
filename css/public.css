@@ -193,7 +193,6 @@ body.viewer-open { overflow: hidden; }
   .about-layout { grid-template-columns: minmax(0,1fr); }
   .about-photo-frame { width: min(240px, 75%); margin-inline: auto; }
   .footer-inner { align-items: flex-start; flex-direction: column; }
-  .copy-desktop { display: none; }
 }
 @media (max-width: 390px) {
   .book-card { grid-template-columns: 90px minmax(0,1fr); }
@@ -219,7 +218,6 @@ body.viewer-open { overflow: hidden; }
   .field input { border-color: var(--line); }
   .out-stock { color: #ffc6bd; background: #4a2927; }
   .state-panel.error { border-color: #74413b; }
-  .upi-copy { background: var(--surface-alt); }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
