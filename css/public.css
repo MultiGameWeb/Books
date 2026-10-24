@@ -124,9 +124,6 @@ button, input, textarea { color: inherit; }
 .field small { color: var(--muted); font-size: .78rem; }
 .order-actions { display: grid; gap: 10px; margin-top: 20px; }
 .order-actions .btn { width: 100%; }
-.upi-copy { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 11px; padding: 12px; border: 1px dashed var(--line); border-radius: 12px; background: var(--surface-alt); }
-.upi-id { overflow-wrap: anywhere; font-size: .86rem; font-weight: 750; }
-.copy-desktop { display: inline-flex; }
 .order-hint { margin-top: 14px; color: var(--muted); font-size: .8rem; }
 .about-section { background: var(--surface); }
 .about-layout { display: grid; grid-template-columns: minmax(0,.75fr) minmax(0,1.25fr); align-items: center; gap: clamp(30px,6vw,78px); }
