@@ -496,7 +496,7 @@ function updateOrderValidation(state = currentCartState()) {
   } else {
     message = "Your order is ready to send on WhatsApp.";
   }
-  setText(els.orderValidation, message);
+  setText(els.orderValidation, hasWhatsApp ? message : "", true);
 }
 
 function openCart() {
