@@ -417,7 +417,8 @@ els.upiPay.addEventListener("click", () => {
     cu: "INR",
     tn: "Book order"
   });
-  window.location.href = "upi://pay?" + params.toString();
+  // UPI apps accept percent-encoded spaces in the transaction note.
+  window.location.href = "upi://pay?" + params.toString().replace(/\\+/g, "%20");
 });
 
 els.copyUpi.addEventListener("click", async () => {
