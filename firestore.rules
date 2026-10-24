@@ -1,0 +1,34 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email in ['ADMIN_EMAIL_1', 'ADMIN_EMAIL_2'];
+    }
+
+    match /books/{bookId} {
+      // Public storefront can read catalogue documents. The public client must
+      // only render documents where visible == true.
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+
+      match /pages/{pageId} {
+        allow read: if true;
+        allow create, update, delete: if isAdmin();
+      }
+    }
+
+    match /settings/{settingsId} {
+      // Public settings (author profile/contact) are readable by the storefront.
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Explicit default-deny for every other collection and document.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
