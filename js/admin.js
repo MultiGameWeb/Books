@@ -95,9 +95,10 @@ function createElement(tag, className, text) {
   return element;
 }
 
-function makeButton(label, className, handler, ariaLabel = "") {
+function makeButton(label, className, handler, ariaLabel = "", disabled = false) {
   const button = createElement("button", className || "btn btn-outline btn-small", label);
   button.type = "button";
+  button.disabled = Boolean(disabled);
   if (ariaLabel) button.setAttribute("aria-label", ariaLabel);
   button.addEventListener("click", handler);
   return button;
