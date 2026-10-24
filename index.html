@@ -1,20 +1,166 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Your Brand | Printed Books</title><meta name="description" content="Shop printed books from Your Brand."><meta name="robots" content="index,follow"><link rel="stylesheet" href="styles.css"></head><body><div id="customerApp">
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0F5C66">
+  <title>Printed Books</title>
+  <meta name="description" content="">
+  <meta property="og:title" content="">
+  <meta property="og:description" content="">
+  <meta property="og:image" content="">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/public.css">
+  <script type="module" src="js/public.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a id="brand" class="brand" href="index.html" hidden aria-label="Home">
+        <span class="brand-icon" aria-hidden="true">▰</span>
+        <span class="brand-copy">
+          <span id="brandName" class="brand-name"></span>
+          <span id="brandTagline" class="brand-tagline"></span>
+        </span>
+      </a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a id="navBooks" href="#booksSection" hidden>Books</a>
+        <a id="navAbout" href="#aboutSection" hidden>About</a>
+        <a id="navContact" href="#contactSection" hidden>Contact</a>
+      </nav>
+      <a class="header-bookmark" href="#orderSection" aria-label="Go to your order">Your order ↓</a>
+    </div>
+  </header>
 
+  <div id="loadingState" class="container state-panel" role="status" aria-live="polite" style="margin-block:28px">
+    <p>Loading bookstore…</p>
+  </div>
 
-<header class="header"><div class="container nav"><a class="brand" href="index.html"><div class="brand-mark">▰</div><div class="brand-text"><strong class="brand-name">Your Brand</strong><span class="tagline">Books for a Better Tomorrow</span></div></a><nav class="nav-links"><a class="active" href="index.html">Books</a><a href="gallery.html">Gallery</a><a href="enquiry.html">Enquiry</a><a href="#about">About</a><a href="#contact">Contact</a></nav><label class="search">⌕<input id="searchInput" placeholder="Search books, topics, authors..." aria-label="Search books"></label><a class="icon-btn" href="cart.html" aria-label="Cart">🛒<span class="cart-count">0</span></a></div></header>
-<section class="hero" aria-label="Bookstore hero"><div class="container hero-inner"><div class="hero-copy"><h1 id="heroTitle">Discover Books That <span class="accent">Inspire Change</span></h1><p id="heroText">Explore printed books to learn, grow and be inspired.</p><div class="hero-actions"><a class="btn btn-gold" href="#books">Shop Books →</a><a class="btn btn-light" href="enquiry.html">Ask an Enquiry</a></div><div class="hero-trust"><span>✓ Quality Prints</span><span>✓ Secure Ordering</span><span>✓ Reliable Delivery</span></div></div><div class="hero-art hero-animation" aria-label="Cinematic 3D book animation"><div class="cinematic-canvas-wrap"><canvas id="bookAnimationCanvas"></canvas></div></div></div></section>
-<section class="trust-strip"><div class="container trust"><div class="trust-item"><div class="ti">🚚</div><div><strong class="delivery-status">Delivery Available</strong><span>Store delivery</span></div></div><div class="trust-item"><div class="ti">📖</div><div><strong>Quality Prints</strong><span>Printed editions</span></div></div><div class="trust-item"><div class="ti">🛡</div><div><strong>Secure Ordering</strong><span>Payment-ready</span></div></div><div class="trust-item"><div class="ti">💬</div><div><strong>Easy Enquiries</strong><span>WhatsApp & contact</span></div></div></div></section>
-<div class="container"><div id="offerBanner" class="offer-banner" aria-live="polite"></div></div>
-<main class="page" id="books"><div class="container"><div class="section-head"><div><h2>All Books <span class="count-pill" id="bookCount">0 Books</span></h2><div class="muted" style="margin-top:5px">Manage real titles, covers, stock and Amazon links from Admin.</div></div><div class="sort-row"><select id="category" class="select" style="width:auto"><option value="">All Categories</option></select><select id="sort" class="select" style="width:auto"><option value="featured">Featured</option><option value="rating">Top Rated</option><option value="price-asc">Price Low to High</option><option value="price-desc">Price High to Low</option></select></div></div><div class="layout"><aside class="sidebar"><div class="filter-group"><h3>Categories</h3><div class="meta">Use the category dropdown above for quick filtering.</div></div><div class="filter-group"><h3>Price Range</h3><input class="range" id="priceRange" type="range" min="0" max="2000" value="2000" style="width:100%"><div style="display:flex;justify-content:space-between"><span>₹0</span><span id="priceMax">₹2,000+</span></div></div><div class="filter-group"><h3>Need Help?</h3><p class="meta" id="supportText">Have a question? We are here to help.</p><a class="btn btn-primary" href="enquiry.html" style="display:block">Send Enquiry</a></div></aside><section><div id="bookGrid" class="grid"></div></section></div></div></main>
-<section class="page" id="about"><div class="container two-col"><div class="panel"><h2>About</h2><p>This area can become the brand/author story. Content can be expanded later.</p></div><div class="panel" id="contact"><h2>Contact</h2><p class="meta" id="contactText">Reach us directly.</p><div class="location-block"><strong class="location-label">Our Store Location</strong><div class="location-text" style="margin-top:6px">Your store address goes here.</div></div><div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-primary whatsapp" href="#">WhatsApp</a><a class="btn btn-light phone" href="#">Call</a><a class="btn btn-light location" href="#">Location</a></div></div></div></section>
-<footer class="footer"><div class="container footer-row"><div class="footer-item"><b>✓</b><div><b>Original Books</b><span>Printed editions</span></div></div><div class="footer-item"><b>🛡</b><div><b>Secure Payments</b><span>Gateway later</span></div></div><div class="footer-item"><b>🚚</b><div><b>Delivery</b><span class="delivery-status">Available</span></div></div><div class="footer-item"><b>💬</b><div><b>Easy Enquiries</b><span>WhatsApp / Call</span></div></div></div></footer><div class="toast"></div>
-<nav class="mobile-bottom-nav" aria-label="Mobile navigation"><a href="index.html" class="active">🏠<span>Home</span></a><a href="#books">📚<span>Books</span></a><a href="cart.html">🛒<span>Cart</span></a><a href="enquiry.html">💬<span>Enquiry</span></a><a href="#contact">📍<span>Contact</span></a></nav>
-</div>
+  <div id="errorState" class="container state-panel error" role="alert" aria-live="assertive" hidden style="margin-block:28px">
+    <p id="errorMessage"></p>
+    <a id="errorWhatsApp" class="fallback-link" href="#" target="_blank" rel="noopener noreferrer" hidden></a>
+  </div>
 
+  <main id="siteContent" hidden>
+    <section id="hero" class="hero" hidden aria-labelledby="heroName">
+      <div class="container hero-inner">
+        <div>
+          <p class="eyebrow">Author's collection</p>
+          <h1 class="hero-title"><span id="heroName"></span></h1>
+          <p id="heroTagline" class="hero-tagline"></p>
+          <div class="hero-actions">
+            <a id="heroSeeBooks" class="btn btn-primary" href="#booksSection" hidden>See books <span aria-hidden="true">→</span></a>
+          </div>
+          <p class="hero-note"><span class="hero-note-dot" aria-hidden="true"></span>Printed books, selected by the author</p>
+        </div>
+        <div id="heroPortrait" class="hero-portrait" hidden>
+          <img id="heroPortraitImage" alt="">
+        </div>
+      </div>
+    </section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="data.js"></script>
-<script src="book-animation.js"></script>
-<script src="app.js"></script>
+    <section id="booksSection" class="section" hidden aria-labelledby="booksHeading">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Explore the collection</p>
+            <h2 id="booksHeading">Books</h2>
+            <p class="section-intro">Browse the available printed editions and select the books you would like to order.</p>
+          </div>
+          <div id="bookCount" class="book-count" aria-live="polite"></div>
+        </div>
+        <div class="book-toolbar">
+          <label class="search-field"><span aria-hidden="true">⌕</span><input id="bookSearch" type="search" placeholder="Search books, authors or topics" aria-label="Search books, authors or topics" autocomplete="off"></label>
+        </div>
+        <div id="booksGrid" class="book-grid"></div>
+        <div id="booksEmpty" class="state-panel" hidden><p></p></div>
+      </div>
+    </section>
 
-</body></html>
+    <section id="orderSection" class="section order-section" hidden aria-labelledby="orderHeading">
+      <div class="container">
+        <div class="section-head">
+          <div><p class="section-kicker">Your selection</p><h2 id="orderHeading">Your order</h2><p class="section-intro">Review quantities and total before sending your order to the author.</p></div>
+        </div>
+        <div class="order-layout">
+          <div class="order-card">
+            <h3>Selected books</h3>
+            <div id="orderList" class="order-list"></div>
+            <div id="orderEmpty" class="muted small" hidden></div>
+            <div class="order-total-row"><span>Total</span><span id="orderTotal" class="order-total">₹0</span></div>
+          </div>
+          <div class="order-card">
+            <h3>Order details</h3>
+            <div class="field">
+              <label for="customerName">Your name</label>
+              <input id="customerName" type="text" maxlength="120" autocomplete="name" placeholder="Enter your name">
+            </div>
+            <p id="orderStatus" class="order-hint" role="status" aria-live="polite" hidden></p>
+            <div class="order-actions">
+              <button id="whatsappOrder" class="btn btn-primary" type="button">Send order on WhatsApp</button>
+            </div>
+            <div id="upiSection" hidden>
+              <div class="divider"></div>
+              <h3>Pay by UPI</h3>
+              <p class="muted small">Open your UPI app to make the payment using the order total shown here.</p>
+              <button id="upiPay" class="btn btn-gold" type="button">Pay by UPI</button>
+              <div class="upi-copy">
+                <span id="upiIdText" class="upi-id"></span>
+                <button id="copyUpi" class="btn btn-outline btn-small copy-desktop" type="button">Copy UPI ID</button>
+              </div>
+            </div>
+            <p class="order-hint">Delivery details can be confirmed with the author on WhatsApp.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="aboutSection" class="section about-section" hidden aria-labelledby="aboutHeading">
+      <div class="container about-layout">
+        <div id="aboutPhotoWrap" class="about-photo-frame" hidden><img id="aboutPhoto" class="about-photo" alt=""></div>
+        <div>
+          <p class="section-kicker">Meet the author</p>
+          <h2 id="aboutHeading"><span id="aboutName"></span></h2>
+          <p id="aboutBio" class="about-bio"></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contactSection" class="section contact-section" hidden aria-labelledby="contactHeading">
+      <div class="container">
+        <p class="section-kicker">Get in touch</p>
+        <h2 id="contactHeading">Contact</h2>
+        <p id="contactName" class="section-intro"></p>
+        <div class="contact-actions">
+          <a id="contactWhatsApp" class="btn btn-primary" href="#" target="_blank" rel="noopener noreferrer" hidden>Message on WhatsApp</a>
+          <a id="contactPhone" class="btn btn-outline" href="#" hidden>Call</a>
+        </div>
+        <p class="contact-note">For book orders, please include the titles and quantities you selected.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer id="siteFooter" class="site-footer" hidden>
+    <div class="container footer-inner"><span id="footerName" class="footer-name"></span><span>Printed books · Direct orders</span></div>
+  </footer>
+
+  <div id="sampleViewer" class="viewer" role="dialog" aria-modal="true" aria-labelledby="viewerTitle" aria-hidden="true" hidden>
+    <div class="viewer-header">
+      <div><div id="viewerTitle" class="viewer-heading"></div><div id="viewerCount" class="viewer-count"></div></div>
+      <button id="viewerClose" class="viewer-close" type="button" aria-label="Close sample preview">×</button>
+    </div>
+    <div id="viewerStage" class="viewer-stage">
+      <img id="viewerImage" class="viewer-image" alt="" hidden>
+      <span class="viewer-sample-stamp" aria-hidden="true">SAMPLE</span>
+      <p id="viewerMessage" class="viewer-help" role="status" aria-live="polite"></p>
+    </div>
+    <div class="viewer-controls">
+      <button id="viewerPrev" class="viewer-arrow" type="button" aria-label="Previous sample page" disabled>←</button>
+      <span class="viewer-help">Swipe or use arrow keys</span>
+      <button id="viewerNext" class="viewer-arrow" type="button" aria-label="Next sample page" disabled>→</button>
+    </div>
+  </div>
+</body>
+</html>
