@@ -83,7 +83,7 @@ button, input, textarea { color: inherit; }
 #booksSection { background: var(--background); }
 .book-toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 13px; margin-bottom: 22px; }
 .search-field { display: flex; align-items: center; gap: 10px; min-width: min(100%, 280px); padding: 0 14px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface); }
-.search-field input { width: 100%; min-height: 44px; border: 0; outline: 0; color: var(--ink); background: transparent; }
+.search-visible-label { color: var(--muted); font-size: .88rem; white-space: nowrap; }\n.search-field input { width: 100%; min-height: 44px; border: 0; outline: 0; color: var(--ink); background: transparent; }
 .book-count { color: var(--muted); font-size: .87rem; }
 .book-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 22px; }
 .book-card { min-width: 0; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); box-shadow: 0 8px 24px rgba(18,48,58,.035); transition: transform .2s ease, box-shadow .2s ease; }
