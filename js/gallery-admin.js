@@ -47,6 +47,7 @@ const els = {
 
 let savedPhotos = [];
 let selectedCompressedImage = "";
+let selectedCompressedImageFile = null;
 
 function status(element, message, kind = "info") {
   element.textContent = message || "";
@@ -189,12 +190,13 @@ async function saveGalleryPhoto(event) {
   els.progress.value = 12;
   status(els.status, "Compressing photo…");
   try {
-    const image = await compressImage(file, {
-      maxWidth: 1100,
-      maxHeight: 1100,
-      maxBytes: 320 * 1024,
-      quality: 0.72
-    });
+    const image = selectedCompressedImageFile === file && selectedCompressedImage
+      ? selectedCompressedImage
+      : await compressImage(file, {          maxWidth: 1100,
+          maxHeight: 1100,
+          maxBytes: 320 * 1024,
+          quality: 0.72
+        });
     if (!safeImage(image)) throw new Error("The compressed image format was unexpected.");
     els.progress.value = 75;
     const reference = doc(collection(db, "gallery"));
@@ -210,6 +212,7 @@ async function saveGalleryPhoto(event) {
     els.form.reset();
     els.sortOrder.value = "0";
     selectedCompressedImage = "";
+    selectedCompressedImageFile = null;
     setImagePreview("");
     status(els.status, "Photo saved.");
     await loadGallery();
@@ -269,12 +272,14 @@ els.form.addEventListener("submit", saveGalleryPhoto);
 els.imageFile.addEventListener("change", async () => {
   setError("");
   selectedCompressedImage = "";
+  selectedCompressedImageFile = null;
   setImagePreview("");
   const file = els.imageFile.files && els.imageFile.files[0];
   if (!file) return;
   try {
     const preview = await compressImage(file, { maxWidth: 700, maxHeight: 700, maxBytes: 180 * 1024, quality: 0.7 });
     selectedCompressedImage = preview;
+    selectedCompressedImageFile = file;
     setImagePreview(preview);
   } catch (error) {
     console.error("Gallery photo preview compression failed:", error);
