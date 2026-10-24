@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#0f5c66">
+  <title>Gallery Manager | Dr M Devendramma Books</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/gallery-admin.css">
+  <script type="module" src="js/gallery-admin.js"></script>
+</head>
+<body>
+  <header class="admin-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="Public bookstore">
+        <span class="brand-mark" aria-hidden="true">▰</span>
+        <span><span class="brand-title">Dr M Devendramma Books</span><span class="brand-subtitle">Gallery manager</span></span>
+      </a>
+      <div class="header-actions">
+        <span id="galleryAdminEmail" class="header-email"></span>
+        <a class="btn btn-outline btn-small" href="admin.html">Main admin</a>
+        <button id="gallerySignOut" class="btn btn-outline btn-small" type="button" hidden>Sign out</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-main gallery-admin-main">
+    <section id="galleryAuthPanel" class="auth-layout" aria-labelledby="galleryAuthHeading">
+      <div class="auth-card">
+        <p class="eyebrow">Private gallery management</p>
+        <h1 id="galleryAuthHeading">Manage gallery photos</h1>
+        <p class="muted">Sign in with the approved author Google account to add, hide, or delete public gallery images.</p>
+        <button id="gallerySignIn" class="btn btn-primary sign-in-button" type="button">Sign in with Google</button>
+        <div id="galleryAuthStatus" class="status-box" role="status" aria-live="polite" hidden></div>
+      </div>
+    </section>
+
+    <section id="galleryDashboard" hidden aria-labelledby="galleryDashboardHeading">
+      <div class="dashboard-heading">
+        <div><p class="eyebrow">Public photo collection</p><h1 id="galleryDashboardHeading">Gallery</h1><p class="muted">Only photos marked visible appear on the public Gallery section.</p></div>
+      </div>
+      <section class="panel" aria-labelledby="addGalleryHeading">
+        <div class="panel-head"><div><h2 id="addGalleryHeading">Add a photo</h2><p class="muted small">Images are compressed in your browser before being saved to Firestore.</p></div></div>
+        <form id="galleryForm" novalidate>
+          <div class="form-grid">
+            <div class="field full"><label for="galleryImageFile">Photo (JPG, PNG or WebP) *</label><input id="galleryImageFile" name="image" type="file" accept="image/jpeg,image/png,image/webp" required><div id="galleryImagePreview" class="gallery-upload-preview" hidden><img id="galleryImagePreviewPhoto" alt="Selected gallery photo"></div></div>
+            <div class="field full"><label for="galleryCaption">Caption (optional)</label><input id="galleryCaption" name="caption" type="text" maxlength="240"></div>
+            <div class="field"><label for="gallerySortOrder">Display order</label><input id="gallerySortOrder" name="sortOrder" type="number" step="1" value="0" inputmode="numeric"></div>
+            <div class="field"><span class="field-label">Public visibility</span><label class="checkbox-line"><input id="galleryVisible" type="checkbox" checked> Visible on public website</label></div>
+          </div>
+          <progress id="galleryUploadProgress" value="0" max="100" hidden aria-label="Image compression progress"></progress>
+          <p id="galleryFormError" class="form-error" role="alert"></p>
+          <div class="form-actions"><button id="gallerySave" class="btn btn-primary" type="submit">Save photo</button></div>
+        </form>
+      </section>
+
+      <section class="panel gallery-admin-list-panel" aria-labelledby="galleryListHeading">
+        <div class="panel-head"><div><h2 id="galleryListHeading">Saved photos</h2><p class="muted small">Change visibility or delete photos below.</p></div><button id="galleryRefresh" class="btn btn-outline" type="button">Refresh</button></div>
+        <div id="galleryAdminStatus" class="status-box" role="status" aria-live="polite" hidden></div>
+        <div id="galleryAdminList" class="gallery-admin-list"></div>
+      </section>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="container footer-inner"><span>Private gallery manager · Changes are saved to Firestore.</span><span><a href="index.html">Open public bookstore</a></span></div></footer>
+</body>
+</html>
