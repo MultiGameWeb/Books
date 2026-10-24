@@ -109,15 +109,19 @@ function safePhone(value) {
 }
 
 function safeAmazonUrl(value) {
+  const allowedDomains = new Set([
+    "amazon.in", "amazon.com", "amazon.co.uk", "amazon.co.jp", "amazon.de", "amazon.fr",
+    "amazon.ca", "amazon.com.au", "amazon.it", "amazon.es", "amazon.com.mx", "amazon.com.br",
+    "amazon.nl", "amazon.se", "amazon.pl", "amazon.sg", "amazon.ae", "amazon.sa", "amazon.com.tr"
+  ]);
   try {
     const url = new URL(String(value || ""));
     if (url.protocol !== "https:") return "";
-    const host = url.hostname.toLowerCase();
-    if (host === "amazon.in" || host === "www.amazon.in" || host === "amazon.com" || host === "www.amazon.com") return url.href;
+    const host = url.hostname.toLowerCase().replace(/^www\\./, "");
+    return allowedDomains.has(host) ? url.href : "";
   } catch {
     return "";
   }
-  return "";
 }
 
 function makeElement(tag, className, content) {
@@ -179,12 +183,16 @@ function applySettings(value) {
   text(els.brandTagline, tagline);
   els.brand.hidden = !brandName && !tagline;
   text(els.heroName, authorName);
+  const heroHeading = els.heroName.closest("h1");
+  if (heroHeading) heroHeading.hidden = !authorName;
   text(els.heroTagline, tagline);
   const heroHasText = Boolean(authorName || tagline);
   els.hero.hidden = !heroHasText;
   els.heroSeeBooks.hidden = books.length === 0;
 
   text(els.aboutName, authorName);
+  const aboutHeading = els.aboutName.closest("h2");
+  if (aboutHeading) aboutHeading.hidden = !authorName;
   text(els.aboutBio, bio);
   const hasPhoto = setDataImage(els.aboutPhoto, settings.authorPhoto, authorName ? "Portrait of " + authorName : "Author portrait");
   els.aboutPhotoWrap.hidden = !hasPhoto;
