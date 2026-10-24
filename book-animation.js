@@ -200,15 +200,15 @@
 
   function renderHandwriting(progressL1, progressL2, progressFlourish) {
     drawPageBackground();
-    const inkColor = '#8a5a1c';
+    const inkColor = '#102A43';
     ctx.fillStyle = inkColor;
     ctx.strokeStyle = inkColor;
-    ctx.lineWidth = 1.6;
+    ctx.lineWidth = 2.2;
     ctx.textAlign = 'left';
     ctx.textBaseline = 'alphabetic';
     ctx.font = "italic 76px Georgia, 'Times New Roman', serif";
-    ctx.shadowColor = 'rgba(245,195,66,0.45)';
-    ctx.shadowBlur = 6;
+    ctx.shadowColor = 'rgba(16,42,67,0.18)';
+    ctx.shadowBlur = 2;
 
     if (progressL1 > 0) {
       ctx.save();
