@@ -1,95 +1,95 @@
 # Dr M Devendramma Books
 
-A static, mobile-first author bookstore served by GitHub Pages. The customer site uses plain HTML, CSS and vanilla JavaScript ES modules. There is no build step, no customer login, and no application-data use of localStorage.
+A static, mobile-first author bookstore served by GitHub Pages. The public site uses plain HTML, CSS and vanilla JavaScript ES modules. There is no build step and no customer login.
 
 ## Public site
 
 - Public URL: https://multigameweb.github.io/Books/
-- Admin URL (separate, not linked from the public site): https://multigameweb.github.io/Books/admin.html
-- Public homepage: index.html
-- Public stylesheet: css/public.css
-- Public Firestore client: js/public.js
-- Shared Firebase initialization: js/db.js
-- Firebase browser configuration: js/firebase-config.js
+- Separate admin URL: https://multigameweb.github.io/Books/admin.html
+- Public homepage: `index.html`
+- Public stylesheet: `css/public.css`
+- Public storefront and cart: `js/public.js`
+- Shared Firebase initialization: `js/db.js`
+- Firebase browser configuration: `js/firebase-config.js`
 
-The page imports Firebase's modular SDK from the official gstatic CDN, using the same SDK version as the admin.
+The admin page is separate, marked noindex and is not linked from the public storefront.
 
-## How the public site reads Firestore
+## Firestore data shown on the public site
+
+The storefront uses only real Firestore data. It does not include sample, demo or dummy books.
 
 ### Site settings
 
-The public page reads the single document **settings/site** with these fields:
+The public site reads the document `settings/site` and uses these fields when present:
 
-- authorName
-- tagline
-- bio
-- authorPhoto
-- whatsappNumber (country code plus digits only)
-- phone
-- upiId
-- upiName
+- `authorName`
+- `tagline`
+- `bio`
+- `authorPhoto`
+- `whatsappNumber` (country code and digits)
+- `phone` (optional)
 
-Sections and individual contact actions are hidden when their backing setting is missing. The document is publicly readable according to firestore.rules so visitors can view the author profile and contact methods. Only the approved admin can write it.
+Missing optional settings are hidden. The public page ignores any UPI fields.
 
 ### Books
 
-The public page queries the **books** collection with a filter for **visible == true**, then sorts the returned documents by sortOrder on the client. It does not load hidden books into the public UI. Each book can have:
+The public site queries the `books` collection using `visible == true` and sorts those documents by `sortOrder` on the client. Hidden books are not displayed or included in public ordering.
 
-- title, author, price, description, category
-- amazonUrl (optional)
-- cover (a compressed data:image URL)
-- inStock (false disables ordering)
-- visible (must be true to be shown)
-- sortOrder
+Supported display/order fields include:
 
-Only valid data-image URLs are assigned to image src attributes. User-provided text is rendered through DOM text properties, not interpolated into HTML.
+- `title`, `author`, `price`, `description`, `category`
+- `amazonUrl` (optional external Amazon link)
+- `cover` (compressed `data:image` URL)
+- `inStock` (when `false`, the book cannot be added or increased in the cart)
+- `visible` (must be `true` to appear)
+- `sortOrder`
 
-### Sample page preview
+Images are assigned only after checking their data-image type. Text from Firestore is rendered with safe DOM text properties, not HTML interpolation.
 
-Sample pages are read from **books/{bookId}/pages** only after the visitor presses **Preview pages**. The full-screen viewer has previous/next buttons, arrow-key and swipe navigation, Escape/close support, and a visible SAMPLE overlay. There is no download button.
+Sample pages remain lazy-loaded from `books/{bookId}/pages` only after the visitor taps **Preview pages**.
 
-### WhatsApp and UPI orders
+## WhatsApp-only ordering
 
-Customers select quantities in memory on the current page; there is no customer login and no cart data is saved to localStorage. The order box asks for the customer name and calculates the total from the selected visible, in-stock books.
+There is no payment gateway, UPI flow, or order write to Firestore. The website opens a WhatsApp message addressed to the phone number in `settings/site.whatsappNumber`.
 
-- **Send order on WhatsApp** opens a wa.me URL with the customer name, book titles, quantities, line totals, total amount, and a request for delivery details.
-- **Pay by UPI** opens a upi://pay link with the configured UPI ID, payee name, total in INR, and the “Book order” transaction note.
-- **Copy UPI ID** is available on desktop browsers.
+1. A customer taps **Add to cart** on a book. The card shows a quantity stepper after the book is added. Out-of-stock books are clearly marked and cannot be added.
+2. The header cart button shows the total item quantity and opens the cart drawer. It lists book titles, unit prices, quantities, line totals and the grand total.
+3. The customer enters a required name and delivery location (house/street, area, city and pincode). An alternate phone number is optional. The WhatsApp order button remains disabled until required fields and an orderable cart are present.
+4. **Order on WhatsApp** opens a URL-encoded `https://wa.me/<number>?text=...` message containing the name, location, optional phone, book lines and total. Telugu and other Unicode text is URL-encoded.
+5. The cart is not cleared when WhatsApp opens. Customers can remove individual books or tap **Clear cart** themselves.
 
-This site does not integrate a payment gateway. UPI hand-off is not proof that a payment completed; the author should confirm payment and order details separately.
+The cart contains only book document IDs and quantities in memory and `sessionStorage`, so it can survive a refresh in the same browser tab/session. Customer name, delivery location and alternate phone are not saved to browser storage. No orders or customer details are written to Firestore. If the WhatsApp number is missing, the order button is hidden and the site displays **Ordering is not available right now**.
+
+When no visible books exist in Firestore, the site shows **Books will be available soon** and displays a WhatsApp contact link only if a valid number is configured. The header and footer stay visible. It never substitutes example books or placeholder author data.
 
 ## Firebase setup and security
 
-The project uses Firebase project **Dr M Devendramma Books**. The Firebase Web App config is in js/firebase-config.js. It is browser configuration, not a service-account secret. Never commit service-account JSON, private keys, access tokens, or other server secrets.
+The Firebase Web App config in `js/firebase-config.js` is public browser configuration, not a service-account secret. Never commit service-account JSON, private keys, access tokens or other server secrets.
 
-Firebase Console should have Google sign-in enabled. Add **multigameweb.github.io** under Authentication → Settings → Authorized domains.
+Firebase Console should have Google sign-in enabled. Add `multigameweb.github.io` under Authentication → Settings → Authorized domains.
 
-The approved admin email must match in both js/admin.js and firestore.rules. The browser allowlist is only a user-experience check; Firestore rules are the actual write-security boundary. Make sure the rules in this repository are published in Firebase Console → Firestore Database → Rules. GitHub commits do not publish Firestore rules automatically.
-
-The rules allow public reads of books, book sample pages and settings, permit writes only for the verified email in isAdmin(), and deny all other paths.
+The approved admin email must match in `js/admin.js` and `firestore.rules`. The browser allowlist is only a user-experience check; Firestore rules are the write-security boundary. Publish the rules separately in Firebase Console → Firestore Database → Rules; a GitHub commit does not publish them.
 
 ## Deploy to GitHub Pages
 
-1. Open the repository Settings → Pages.
+1. Open repository Settings → Pages.
 2. Select **Deploy from a branch**, branch **main**, folder **/(root)**, and save.
 3. Wait for the Pages deployment to complete.
-4. Test the public site and the admin URL over HTTPS.
+4. Test the public site and separate admin URL over HTTPS.
 
-No npm installation, bundler, build command, or server is required.
+No npm installation, bundler, build command or server is required.
 
-## Phase 2 customer-site testing checklist
+## Public site testing checklist
 
-After adding or changing data through the admin, refresh the public site and check:
-
-1. A book added in Admin with **Visible on website** checked appears in the public Books grid.
-2. Changing a book price in Admin shows the updated price on refresh.
-3. Turning **Visible on website** off hides the book from the public page.
-4. Setting **In stock** off displays “Out of stock” and disables ordering for that book.
-5. Preview pages load only after tapping the button; the viewer opens/closes, arrows work, swipes work on a phone, Escape closes it, and the SAMPLE overlay stays visible.
-6. The WhatsApp link contains the right destination number and correctly encoded item/name/quantity/total message; the message asks for delivery details.
-7. The UPI link has the correct pa, pn, am, cu=INR, and tn=Book%20order values; Copy UPI ID works on desktop.
-8. Telugu text in book title, description, biography and author name renders with Noto Sans Telugu.
-9. Confirm missing contact fields and empty sections remain hidden, and test both the loading and error/fallback states.
-10. Try the site in mobile and desktop widths, light/dark mode, keyboard-only navigation and reduced-motion mode.
-
-The admin remains a separate noindex page and is not linked from the public site.
+- Add a real book in Admin, set **Visible on website** on and save. Confirm it appears publicly. Hidden books should not appear.
+- Tap **Add to cart**, increase/decrease quantity and remove the item. Confirm header count, unit price, line total and grand total update.
+- Mark a book out of stock. Confirm the badge appears and it cannot be added/increased.
+- Refresh the page and confirm the cart IDs and quantities remain in the same browser session.
+- Open the cart with name or delivery location empty. Confirm **Order on WhatsApp** stays disabled and an inline message explains what is missing.
+- Fill name and delivery location (house/street, area, city, pincode). Confirm ordering enables when the cart contains only available books.
+- Add an alternate phone and place a test order. Confirm WhatsApp receives the exact field order, numbered book lines, integer line totals and integer grand total.
+- Use Telugu in the name and delivery location. Confirm the WhatsApp message is properly encoded and readable.
+- Confirm opening WhatsApp does not clear the cart. Only **Clear cart** or removing an item changes it.
+- Remove/turn off the WhatsApp number in Settings. Confirm ordering is unavailable and the order button is hidden.
+- With zero visible books, confirm the centered **Books will be available soon** state, a contact link only if WhatsApp is configured, and visible header/footer.
+- Test sample-page previews, keyboard closing/navigation, mobile layout, light/dark mode and reduced-motion preferences.
