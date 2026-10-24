@@ -192,7 +192,8 @@ async function saveGalleryPhoto(event) {
   try {
     const image = selectedCompressedImageFile === file && selectedCompressedImage
       ? selectedCompressedImage
-      : await compressImage(file, {          maxWidth: 1100,
+      : await compressImage(file, {
+          maxWidth: 1100,
           maxHeight: 1100,
           maxBytes: 320 * 1024,
           quality: 0.72
