@@ -855,3 +855,14 @@
   .book-animation-scene .book-pen { opacity: 1; }
   .book-animation-scene .written-quote { clip-path: none; }
 }
+
+
+/* Let the pen travel across both full writing lines, not just their first half. */
+@keyframes pen-write-clear {
+  0% { opacity: 0; transform: translate3d(0, 0, 190px) rotate(36deg); }
+  7% { opacity: 1; transform: translate3d(0, 0, 190px) rotate(36deg); }
+  40% { opacity: 1; transform: translate3d(108px, 0, 190px) rotate(36deg); }
+  49% { opacity: 1; transform: translate3d(0, 36px, 190px) rotate(36deg); }
+  84% { opacity: 1; transform: translate3d(108px, 36px, 190px) rotate(36deg); }
+  100% { opacity: 1; transform: translate3d(108px, 36px, 190px) rotate(36deg); }
+}
