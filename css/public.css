@@ -591,3 +591,31 @@ body.gallery-lightbox-open { overflow: hidden; }
   .gallery-section { background: var(--surface); }
   .gallery-card { background: #172b2d; }
 }
+
+
+/* Contrast-safe Contact section in both light and dark themes. */
+#contactSection {
+  background: var(--surface);
+  color: var(--ink);
+}
+#contactSection h2 { color: var(--ink); }
+#contactSection .section-kicker { color: var(--teal); }
+#contactSection .section-intro { color: var(--muted); }
+#contactSection .contact-actions .btn-primary {
+  color: #fff;
+  background: var(--teal);
+  border-color: var(--teal);
+}
+#contactSection .contact-actions .btn-primary:hover:not(:disabled) {
+  color: #fff;
+  background: var(--teal-deep);
+}
+#contactSection .contact-actions .btn-outline {
+  color: var(--teal);
+  background: transparent;
+  border-color: var(--line);
+}
+#contactSection .contact-actions .btn-outline:hover:not(:disabled) {
+  background: var(--surface-alt);
+  border-color: var(--teal);
+}
