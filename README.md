@@ -8,6 +8,7 @@ A static, mobile-first author bookstore served by GitHub Pages. The public site 
 - Separate admin URL: https://multigameweb.github.io/Books/admin.html
 - Separate gallery manager (approved author sign-in): https://multigameweb.github.io/Books/gallery-admin.html
 - Public homepage: `index.html`
+- Public privacy policy: `privacy.html`
 - Public stylesheet: `css/public.css`
 - Public storefront, gallery, enquiry form and cart: `js/public.js`
 - Offline CSS 3D book hero animation: `book-animation.js` and `css/book-animation.css`
@@ -15,7 +16,7 @@ A static, mobile-first author bookstore served by GitHub Pages. The public site 
 - Shared Firebase initialization: `js/db.js`
 - Firebase browser configuration: `js/firebase-config.js`
 
-The admin page is separate, marked noindex and is not linked from the public storefront.
+The admin page is separate, marked noindex and is not linked from the public storefront. The public footer links to `privacy.html`.
 
 ## Firestore data shown on the public site
 
