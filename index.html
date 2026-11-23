@@ -14,7 +14,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700;800&family=Newsreader:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config = { corePlugins: { preflight: false } };</script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="css/public.css?v=20261123c">
+  <link rel="stylesheet" href="css/public.css?v=20261123e">
   <link rel="stylesheet" href="css/book-animation.css?v=20261123b">
   <script type="module" src="js/public.js?v=20261025b"></script>
   <script src="book-animation.js?v=20261123b" defer></script>
@@ -68,6 +68,35 @@
         </div>
         <div id="booksGrid" class="book-grid"></div>
         <p id="booksStatus" class="section-status" role="status" aria-live="polite">Loading books…</p>
+      </div>
+    </section>
+
+    <section id="amazonBooksSection" class="section amazon-books-section" aria-labelledby="amazonBooksHeading">
+      <div class="container">
+        <div class="section-head amazon-section-head">
+          <div>
+            <p class="section-kicker">More ways to order</p>
+            <h2 id="amazonBooksHeading">Available on Amazon</h2>
+            <p class="section-intro">You can buy from Amazon. Choose one of the book listings below to view it on Amazon India.</p>
+          </div>
+        </div>
+        <div class="amazon-links-grid">
+          <article class="amazon-link-card">
+            <span class="amazon-link-label">Amazon book listing 1</span>
+            <code>8193906837</code>
+            <a class="btn btn-outline amazon-buy-link" href="https://www.amazon.in/dp/8193906837" target="_blank" rel="noopener noreferrer">You can buy from Amazon ↗</a>
+          </article>
+          <article class="amazon-link-card">
+            <span class="amazon-link-label">Amazon book listing 2</span>
+            <code>8193906802</code>
+            <a class="btn btn-outline amazon-buy-link" href="https://www.amazon.in/dp/8193906802" target="_blank" rel="noopener noreferrer">You can buy from Amazon ↗</a>
+          </article>
+          <article class="amazon-link-card">
+            <span class="amazon-link-label">Amazon book listing 3</span>
+            <code>9788195456819</code>
+            <a class="btn btn-outline amazon-buy-link" href="https://www.amazon.in/dp/9788195456819" target="_blank" rel="noopener noreferrer">You can buy from Amazon ↗</a>
+          </article>
+        </div>
       </div>
     </section>
 
