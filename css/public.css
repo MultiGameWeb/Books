@@ -619,3 +619,41 @@ body.gallery-lightbox-open { overflow: hidden; }
   background: var(--surface-alt);
   border-color: var(--teal);
 }
+
+
+/* Restore the bookstore's centered layout and editorial headings.
+   These ID-scoped rules intentionally outrank utility styles from the hero's Tailwind CDN. */
+#siteHeader > .container,
+#siteContent > .section > .container,
+#siteFooter > .container {
+  box-sizing: border-box;
+  width: min(1180px, calc(100% - 36px));
+  max-width: 1180px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+#siteContent h2,
+#cartDrawer h2 {
+  margin: 0;
+  font-family: Newsreader, Georgia, "Noto Sans Telugu", serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -.025em;
+}
+#siteContent h3,
+#cartDrawer h3 {
+  margin: 0;
+  font-family: Newsreader, Georgia, "Noto Sans Telugu", serif;
+  font-size: 1.34rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -.02em;
+}
+@media (max-width: 760px) {
+  #siteHeader > .container,
+  #siteContent > .section > .container,
+  #siteFooter > .container {
+    width: calc(100% - 32px);
+  }
+}
