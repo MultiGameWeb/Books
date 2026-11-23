@@ -544,7 +544,9 @@
 #home #explore-cta{text-decoration:none}
 #home .book-viewport{touch-action:pan-y}
 @media(max-width:600px){#home{min-height:720px}#home .quote-stage{min-height:132px}#home .cinema-hero-actions{flex-direction:column}#home .cta-gold-btn,#home .cinema-enquiry-link{width:min(100%,310px)}#home footer{width:100%}#home footer>div{gap:.55rem;padding-left:.7rem;padding-right:.7rem}#home .timeline-segment{height:4px}#home #scene-counter{font-size:10px}}
-@media(prefers-reduced-motion:reduce){#home .book-halo-glow{animation:none!important}#home .book-rig,#home .book-floor-shadow,#home .cover-front,#home .page-block-left,#home .quote-slide{transition:none!important}#home .flip-page.is-flipping,#home .flip-page.is-flipping .page-shimmer-glint{animation:none!important}}
+#home.motion-reduced .book-halo-glow{animation:none!important}
+#home.motion-reduced .book-rig,#home.motion-reduced .book-floor-shadow,#home.motion-reduced .cover-front,#home.motion-reduced .page-block-left,#home.motion-reduced .quote-slide{transition:none!important}
+#home.motion-reduced .flip-page.is-flipping,#home.motion-reduced .flip-page.is-flipping .page-shimmer-glint{animation:none!important}
 
 
 /* Fit the cinematic hero beneath the sticky bookstore header. */
