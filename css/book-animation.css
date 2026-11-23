@@ -545,3 +545,65 @@
 #home .book-viewport{touch-action:pan-y}
 @media(max-width:600px){#home{min-height:720px}#home .quote-stage{min-height:132px}#home .cinema-hero-actions{flex-direction:column}#home .cta-gold-btn,#home .cinema-enquiry-link{width:min(100%,310px)}#home footer{width:100%}#home footer>div{gap:.55rem;padding-left:.7rem;padding-right:.7rem}#home .timeline-segment{height:4px}#home #scene-counter{font-size:10px}}
 @media(prefers-reduced-motion:reduce){#home .book-halo-glow{animation:none!important}#home .book-rig,#home .book-floor-shadow,#home .cover-front,#home .page-block-left,#home .quote-slide{transition:none!important}#home .flip-page.is-flipping,#home .flip-page.is-flipping .page-shimmer-glint{animation:none!important}}
+
+
+/* Fit the cinematic hero beneath the sticky bookstore header. */
+#home.hero-cinema-stage {
+  min-height: calc(100vh - var(--site-header-height, 85px));
+  min-height: calc(100svh - var(--site-header-height, 85px));
+  padding-top: clamp(14px, 2.2svh, 22px) !important;
+  padding-bottom: clamp(12px, 1.8svh, 18px) !important;
+  gap: clamp(8px, 1.25svh, 14px);
+}
+#home .cinema-content { gap: clamp(7px, 1.2svh, 13px); }
+#home .book-viewport {
+  height: clamp(220px, 34svh, 330px);
+  margin-top: 0;
+}
+#home .book-rig {
+  --book-w: clamp(145px, 19vw, 205px);
+  --book-h: clamp(205px, 29svh, 285px);
+}
+#home .quote-stage {
+  min-height: clamp(94px, 13svh, 122px);
+  width: min(100%, 820px);
+}
+#home .quote-slide h1,
+#home .quote-slide h2 {
+  font-size: clamp(1.55rem, 3.3vw, 2.55rem);
+  line-height: 1.1;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+#home .quote-slide p { font-size: clamp(9px, .8vw, 11px); }
+#home .cinema-hero-actions { gap: 10px; padding-top: 2px; }
+#home footer { padding-top: 2px; padding-bottom: 0; }
+#home .book-halo-glow { width: min(70vw, 500px); height: min(70vw, 500px); }
+#home.motion-reduced .book-halo-glow { animation: none !important; }
+@media (max-width: 760px) {
+  #home.hero-cinema-stage {
+    min-height: calc(100vh - var(--site-header-height, 124px));
+    min-height: calc(100svh - var(--site-header-height, 124px));
+  }
+  #home .book-viewport { height: clamp(220px, 32svh, 290px); }
+  #home .book-rig {
+    --book-w: clamp(142px, 43vw, 188px);
+    --book-h: clamp(200px, 29svh, 250px);
+  }
+  #home .quote-stage { min-height: 116px; }
+  #home .quote-slide h1,
+  #home .quote-slide h2 {
+    font-size: clamp(1.4rem, 6vw, 2rem);
+    padding-inline: 10px;
+  }
+  #home footer { max-width: 100%; }
+}
+@media (max-height: 720px) and (min-width: 761px) {
+  #home .book-viewport { height: clamp(205px, 30svh, 250px); }
+  #home .book-rig {
+    --book-w: clamp(140px, 17vw, 180px);
+    --book-h: clamp(195px, 26svh, 230px);
+  }
+  #home .quote-stage { min-height: 88px; }
+}

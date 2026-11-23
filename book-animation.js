@@ -15,7 +15,7 @@
          1. FLOATING GOLDEN LIGHT PARTICLES (DUST MOTES)
          -------------------------------------------------------------------------- */
       const canvas = document.getElementById('dust-canvas');
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas ? canvas.getContext('2d') : null;
       let particles = [];
       let canvasWidth = 0;
       let canvasHeight = 0;
@@ -86,9 +86,14 @@
       /* --------------------------------------------------------------------------
          2. 3D BOOK CHOREOGRAPHY & CURSOR PARALLAX TILT
          -------------------------------------------------------------------------- */
-      const heroStage = document.getElementById('literary-hero');
+      const heroStage = document.getElementById('home');
       const bookRig = document.getElementById('book-rig');
-      const flipPages = Array.from(document.querySelectorAll('.flip-page'));
+      const flipPages = Array.from(document.querySelectorAll('#home .flip-page'));
+
+      if (!canvas || !ctx || !heroStage || !bookRig) {
+        console.error('The cinematic book animation could not find its homepage elements.');
+        return;
+      }
 
       let isBookOpen = false;
       let targetTiltX = 0;
@@ -205,6 +210,7 @@
         const previousIndex = activeSceneIndex;
         activeSceneIndex = newIndex;
         sceneElapsedMs = 0;
+        timelineSegments.forEach((segment, index) => segment.setAttribute('aria-pressed', String(index === newIndex)));
 
         quoteSlides.forEach((slide, idx) => {
           slide.classList.remove('is-active', 'is-exiting');
@@ -238,21 +244,24 @@
       }
 
       function togglePlayState(forceState) {
+        const wasPlaying = isPlaying;
         isPlaying = typeof forceState === 'boolean' ? forceState : !isPlaying;
 
         if (isPlaying) {
+          heroStage.classList.remove('motion-reduced');
           iconPause.classList.remove('hidden');
           iconPlay.classList.add('hidden');
           btnPlayPause.setAttribute('aria-label', 'Pause animation');
           lastFrameTime = performance.now();
-          // Resume CSS animations on flipping pages
-          flipPages.forEach((p) => (p.style.animationPlayState = 'running'));
+          flipPages.forEach((page) => (page.style.animationPlayState = 'running'));
+          if (!wasPlaying) startBookSequence(isBookOpen);
         } else {
+          clearTimeout(openDelayTimer);
+          clearInterval(pageFlipTimer);
           iconPause.classList.add('hidden');
           iconPlay.classList.remove('hidden');
           btnPlayPause.setAttribute('aria-label', 'Play animation');
-          // Pause CSS animations on flipping pages
-          flipPages.forEach((p) => (p.style.animationPlayState = 'paused'));
+          flipPages.forEach((page) => (page.style.animationPlayState = 'paused'));
         }
       }
 
@@ -309,22 +318,12 @@
 
       // Smooth CTA handler (scrolls if #books-collection exists on host page, or shows subtle confirmation)
       const exploreCta = document.getElementById('explore-cta');
-      const ctaToast = document.getElementById('cta-toast');
-      let toastTimeout = null;
-
-      exploreCta.addEventListener('click', (e) => {
+      exploreCta.addEventListener('click', (event) => {
         const targetSection = document.getElementById('booksSection');
-        if (targetSection) {
-          e.preventDefault();
-          targetSection.scrollIntoView({ behavior: 'smooth' });
-        } else {
-          e.preventDefault();
-          ctaToast.style.opacity = '1';
-          clearTimeout(toastTimeout);
-          toastTimeout = setTimeout(() => {
-            ctaToast.style.opacity = '0';
-          }, 2400);
-        }
+        if (!targetSection) return;
+        event.preventDefault();
+        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.replaceState(null, '', '#booksSection');
       });
 
       /* --------------------------------------------------------------------------
@@ -366,10 +365,30 @@
       });
 
       function initializeBookHero() {
+        const siteHeader = document.getElementById('siteHeader');
+        const updateHeroHeight = () => {
+          if (siteHeader) {
+            const headerHeight = Math.ceil(siteHeader.getBoundingClientRect().height);
+            heroStage.style.setProperty('--site-header-height', headerHeight + 'px');
+          }
+        };
+        updateHeroHeight();
+        if (siteHeader && 'ResizeObserver' in window) {
+          new ResizeObserver(updateHeroHeight).observe(siteHeader);
+        } else {
+          window.addEventListener('resize', updateHeroHeight, { passive: true });
+        }
+
+        if (!isPlaying) {
+          heroStage.classList.add('motion-reduced');
+          iconPause.classList.add('hidden');
+          iconPlay.classList.remove('hidden');
+          btnPlayPause.setAttribute('aria-label', 'Play animation');
+        }
         resizeCanvas();
         createParticles();
         setActiveQuote(0);
-        startBookSequence(false);
+        if (isPlaying) startBookSequence(false);
         lastFrameTime = performance.now();
         requestAnimationFrame(masterLoop);
       }
