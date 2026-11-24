@@ -5,7 +5,7 @@ service cloud.firestore {
     function isAdmin() {
       return request.auth != null
         && request.auth.token.email_verified == true
-        && request.auth.token.email in ['devinaresh4@gmail.com'];
+        && request.auth.token.email in ['devinaresh4@gmail.com', 'nobrokerageappfirebase@gmail.com'];
     }
 
     match /books/{bookId} {
